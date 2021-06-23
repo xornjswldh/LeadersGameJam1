@@ -36,7 +36,7 @@ end
 
 function refill_card(self)
 	local cards = {}
-	while #self.hand<MAX_HAND do
+	while self.hand_count<MAX_HAND do
 		table.insert(cards, draw(self))
 	end
 	return cards
