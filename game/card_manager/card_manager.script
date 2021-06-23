@@ -2,7 +2,6 @@ function init(self)
 	math.randomseed(os.time())
 	local MAX_HAND = 4
 	self.deck
-	self.hand = {"neutral01", "neutral02", "neutral03", "neutral04", "neutral05"} --중립(추가 예정)
 	CHARACTER = {"army", "scientist", "shaman", "gambler", "neutral"}
 end
 
@@ -25,7 +24,6 @@ function draw(self)
 	local num = math.random(1, #self.deck)
 	local card = self.deck[num]
 	table.remove(self.deck, num)
-	table.insert(self.hand, card)
 	return card
 end
 
