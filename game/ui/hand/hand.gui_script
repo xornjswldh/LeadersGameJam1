@@ -1,13 +1,17 @@
 local card = require "game.ui.module.card"
-
-
+local INITAIL_POS=vmath.vector3(640,-100,0)
+local DEDAIL_VIEW=vmath.vector3(1.5,1.5,1)
+local GENERAL_VIEW=vmath.vector3(1,1,1)
+local SAMPLE
+local SUBMIT_AREA
 function init(self)
-	self.sample = gui.get_node("card_sample/outter_frame")
+	SAMPLE = gui.get_node("card_sample/outter_frame")
+	SUBMIT_AREA = gui.get_node("submit_area")
 	msg.post(".", "acquire_input_focus")
 	self.card={}
 end
 
-function rearrange_cards(self)
+function card_added(self)
 	for i=1,#self.card do
 		local pos = gui.get_node("pos"..tostring(#self.card+1).."_"..tostring(i))
 		self.card[i].pos=pos
@@ -15,33 +19,63 @@ function rearrange_cards(self)
 	end
 end
 
+function card_removed(self)
+	if #self.card>0 then
+		for i=1,#self.card do
+			local pos = gui.get_node("pos"..tostring(#self.card).."_"..tostring(i))
+			self.card[i].pos=pos
+			self.card[i].return_to_hand()
+		end
+	end
+end
+
 function on_message(self, message_id, message, sender)
 	if message_id==hash("draw") then
 		for i=1,#message.card do
 			if #self.card>0 then
-				rearrange_cards(self)
+				card_added(self)
 			end
 			local pos = gui.get_node("pos"..tostring(#self.card+1).."_"..tostring(#self.card+1))
-		
-			local node = gui.clone_tree(self.sample)
-	
+			local node = gui.clone_tree(SAMPLE)
 			local new_card = card.create(node[hash("card_sample/outter_frame")], pos, message.card[i].title, message.card[i].effect, message.card[i].cost)
 			table.insert(self.card,new_card)
-			new_card.return_to_hand()
+			new_card:create_to_hand(INITAIL_POS)
 		end
 	end
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+	local action_pos=vmath.vector3(action.x,action.y,0)
+	if action_id==hash("touch") then
+		for i = 1, #self.card do
+			local input_card = self.card[i]
+			if gui.pick_node(input_card.node, action.x, action.y) then
+				if action.pressed then
+					input_card.hold=true
+					break
+				end
+			end
+			
+			if input_card.hold then
+				input_card:change_position(action_pos)
+				input_card:change_rotation(vmath.vector3(0,0,0))
+				input_card:change_scale(DEDAIL_VIEW)
+			end
+			
+			if input_card.hold and action.released then
+				if gui.pick_node(SUBMIT_AREA, action.x, action.y) then
+					input_card:use()
+					table.remove(self.card,i)
+					card_removed(self)
+					break
+				else
+					input_card.return_to_hand()
+					input_card.hold=false
+				end
+			end
+			
+		end
+	end
 end
 
 function on_reload(self)
