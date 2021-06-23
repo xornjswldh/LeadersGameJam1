@@ -1,8 +1,11 @@
+local HAND = "main:/hand"
+local MAX_HAND = 4
 function init(self)
 	math.randomseed(os.time())
-	local MAX_HAND = 4
-	self.deck
+	self.deck = {{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2}}
+	self.hand={}
 	CHARACTER = {"army", "scientist", "shaman", "gambler", "neutral"}
+	msg.post(".", "turn_end")
 end
 
 function on_message(self, message_id, message, sender)
@@ -24,12 +27,13 @@ function draw(self)
 	local num = math.random(1, #self.deck)
 	local card = self.deck[num]
 	table.remove(self.deck, num)
+	table.insert(self.hand, card)
 	return card
 end
 
 function refill_card(self)
 	local cards = {}
-	while self.card<MAX_HAND do
+	while #self.hand<MAX_HAND do
 		table.insert(cards, draw(self))
 	end
 	return cards
