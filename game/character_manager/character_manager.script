@@ -1,0 +1,8 @@
+function on_message(self, message_id, message, sender)
+	if message_id == hash("update_character") then
+		self.character = message --message={[캐릭터이름]={hp=50,effect="",cards={}...}
+	end
+	if message_id == hash("turn_begin") then
+		msg.post(CARD_MANAGER), "generate_deck", self.character)
+	end
+end

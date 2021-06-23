@@ -3,35 +3,16 @@ function init(self)
 	local MAX_HAND = 4
 	self.deck
 	self.hand = {"neutral01", "neutral02", "neutral03", "neutral04", "neutral05"} --중립(추가 예정)
+	CHARACTER = {"army", "scientist", "shaman", "gambler", "neutral"}
 end
 
 function on_message(self, message_id, message, sender)
 	if messge_id == hash("generate_deck") then
-		for i = 1, #message.charecter_list do
-			if message.character_list[i] == "army" then -- 군인
-				table.insert(self.deck, "army01")
-				table.insert(self.deck, "army02")
-				table.insert(self.deck, "army03")
-				table.insert(self.deck, "army04")
-			end
-			
-			if message.character_list[i] == "scientist" then --과학자
-				table.insert(self.deck, "scientist01")
-				table.insert(self.deck, "scientist02")
-				table.insert(self.deck, "scientist03")
-				table.insert(self.deck, "scientist04")
-			end
-
-			if message.character_list[i] == "shaman" then --주술사
-				table.insert(self.deck, "shaman01")
-				table.insert(self.deck, "shaman02")
-				table.insert(self.deck, "shaman03")
-			end
-
-			if message.character_list[i] == "gambler" then --도박사
-				table.insert(self.deck, "gambler01")
-				table.insert(self.deck, "gambler02")
-				table.insert(self.deck, "gambler03")
+		for j,character in pair(CHARACTER) do
+			if message[character] then
+				for i=1,#message[character].cards do
+					table.insert(self.deck, message[character].cards[i])
+				end
 			end
 		end
 	end
