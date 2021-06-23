@@ -1,0 +1,60 @@
+local CAM="/camera"
+local MIN_CAM_HEIGHT = -100
+local MIN_CAM_X = -200
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.press=false
+	self.press_pos=vmath.vector3()
+end
+
+
+function update(self, dt)
+	local cam_pos = go.get_position(CAM)
+	if  cam_pos.y < MIN_CAM_HEIGHT and cam_pos.x < MIN_CAM_X then
+		cam_pos.y = MIN_CAM_HEIGHT
+		cam_pos.x = MIN_CAM_HEIGHT
+		go.set_position(cam_pos,CAM)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	-- Add message-handling code here
+	-- Learn more: https://defold.com/manuals/message-passing/
+	-- Remove this function if not needed
+end
+
+function on_input(self, action_id, action)
+	local action_pos = vmath.vector3(action.x,action.y,0)
+	local cam_pos = go.get_position(CAM)
+	if action_id==hash("touch") then
+		if action.pressed then
+			self.press=true
+			self.press_pos = action_pos
+		elseif action.released then
+			self.press=false
+		else
+			cam_pos.x = cam_pos.x+(self.press_pos.y-action_pos.y)/3
+			cam_pos.y = cam_pos.y+(self.press_pos.y-action_pos.y)/6
+			go.set_position(cam_pos,CAM)
+		end
+	end	
+	if action_id==hash("wheel_up") then
+		if action.value == 1 then
+			cam_pos.x = cam_pos.x+200
+			cam_pos.y = cam_pos.y+100
+			go.set_position(cam_pos,CAM)
+		end
+	elseif action_id==hash("wheel_down") then
+		if action.value == 1 then
+			cam_pos.x = cam_pos.x-200
+			cam_pos.y = cam_pos.y-100
+			go.set_position(cam_pos,CAM)
+		end
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

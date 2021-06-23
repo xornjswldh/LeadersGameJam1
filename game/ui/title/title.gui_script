@@ -1,0 +1,84 @@
+local SCENE_PROXY = "main:/scene_proxy"
+local GAME_START_BTN 
+local OPTION_BTN
+local EXIT_BTN
+local BLACK_FILTER
+local OPTION
+local OPTION_CROSS
+local RED = vmath.vector4(1,0,0,1)
+local WHITE = vmath.vector4(1,1,1,1)
+local BLUE = vmath.vector4(0,0,1,1)
+function init(self)
+	GAME_START_BTN = gui.get_node("game_start_btn")
+	OPTION=gui.get_node("option/window")
+	OPTION_CROSS=gui.get_node("option/cross")
+	OPTION_BTN = gui.get_node("option_btn")
+	EXIT_BTN = gui.get_node("exit_btn")
+	BLACK_FILTER = gui.get_node("black_filter")
+	msg.post(".", "acquire_input_focus")
+	self.alpha = 0.7
+	self.flip = false
+	gui.set_enabled(OPTION, false)
+	timer.delay(0.01, true, function()
+		if self.alpha>0.8 then
+			self.flip=false
+		elseif self.alpha<0.6 then
+			self.flip=true
+		end 
+		if not self.flip then
+			gui.set_color(BLACK_FILTER, vmath.vector4(0,0,0,self.alpha))
+			self.alpha=self.alpha-0.001
+		else
+			gui.set_color(BLACK_FILTER, vmath.vector4(0,0,0,self.alpha))
+			self.alpha=self.alpha+0.001
+		end
+	end)
+end
+
+
+function on_input(self, action_id, action)
+	if not action_id then
+		if gui.pick_node(GAME_START_BTN, action.x, action.y) then
+			gui.set_color(GAME_START_BTN, RED)
+		else
+			gui.set_color(GAME_START_BTN, WHITE)
+		end
+		if gui.pick_node(OPTION_BTN, action.x, action.y) then
+			gui.set_color(OPTION_BTN, RED)
+		else
+			gui.set_color(OPTION_BTN, WHITE)
+		end
+		if gui.pick_node(OPTION_CROSS, action.x, action.y) then
+			gui.set_color(OPTION_CROSS, BLUE)
+		else
+			gui.set_color(OPTION_CROSS, WHITE)
+		end
+		if gui.pick_node(EXIT_BTN, action.x, action.y) then
+			gui.set_color(EXIT_BTN, RED)
+		else
+			gui.set_color(EXIT_BTN, WHITE)
+		end
+	end
+
+	if action_id == hash("touch") and action.pressed then
+		if gui.pick_node(GAME_START_BTN, action.x, action.y) then
+			msg.post(SCENE_PROXY, "change_scene",{next="#root"})
+		end
+		if gui.pick_node(OPTION_BTN, action.x, action.y) then
+			gui.set_enabled(OPTION, true)
+		end
+		if gui.pick_node(OPTION_CROSS, action.x, action.y) then
+			gui.set_enabled(OPTION, false)
+		end
+		if gui.pick_node(EXIT_BTN, action.x, action.y) then
+			os.exit()
+		end
+	end
+	
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end

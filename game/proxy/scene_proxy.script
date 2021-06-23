@@ -1,0 +1,21 @@
+go.property("scene", msg.url("#title"))
+function init(self)
+	msg.post(self.scene, "load")
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id==hash("proxy_loaded") then
+		msg.post(sender, "init")
+		msg.post(sender, "enable")
+		msg.post(sender, "acquire_input_focus")
+	end
+	if message_id==hash("change_scene") then
+		msg.post(self.scene, "disable")
+		msg.post(self.scene, "final")
+		msg.post(self.scene, "unload")
+		self.scene=message.next
+	end
+	if message_id==hash("proxy_unloaded") then
+		msg.post(self.scene, "load")
+	end
+end

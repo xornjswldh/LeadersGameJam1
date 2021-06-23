@@ -1,7 +1,7 @@
-name: "main"
+name: "scene"
 instances {
-  id: "scene_proxy"
-  prototype: "/game/proxy/scene_proxy.go"
+  id: "title"
+  prototype: "/game/ui/title/title.go"
   position {
     x: 0.0
     y: 0.0

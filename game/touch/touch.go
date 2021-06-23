@@ -1,6 +1,6 @@
 components {
-  id: "character_manager"
-  component: "/game/character_manager/character_manager.script"
+  id: "touch"
+  component: "/game/touch/touch.script"
   position {
     x: 0.0
     y: 0.0
