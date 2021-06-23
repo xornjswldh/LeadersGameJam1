@@ -1,0 +1,57 @@
+function init(self)
+	math.randomseed(os.time())
+	local MAX_HAND = 4
+	self.deck
+	self.hand = {"neutral01", "neutral02", "neutral03", "neutral04", "neutral05"} --중립(추가 예정)
+end
+
+function on_message(self, message_id, message, sender)
+	if messge_id == hash("generate_deck") then
+		for i = 1, #message.charecter_list do
+			if message.character_list[i] == "army" then -- 군인
+				table.insert(self.deck, "army01")
+				table.insert(self.deck, "army02")
+				table.insert(self.deck, "army03")
+				table.insert(self.deck, "army04")
+			end
+			
+			if message.character_list[i] == "scientist" then --과학자
+				table.insert(self.deck, "scientist01")
+				table.insert(self.deck, "scientist02")
+				table.insert(self.deck, "scientist03")
+				table.insert(self.deck, "scientist04")
+			end
+
+			if message.character_list[i] == "shaman" then --주술사
+				table.insert(self.deck, "shaman01")
+				table.insert(self.deck, "shaman02")
+				table.insert(self.deck, "shaman03")
+			end
+
+			if message.character_list[i] == "gambler" then --도박사
+				table.insert(self.deck, "gambler01")
+				table.insert(self.deck, "gambler02")
+				table.insert(self.deck, "gambler03")
+			end
+		end
+	end
+	if message_id == hash("turn_end") then
+		msg.post(HAND, "draw", {card = refill_card(self)})
+	end
+end
+
+function draw(self)
+	local num = math.random(1, #self.deck)
+	local card = self.deck[num]
+	table.remove(self.deck, num)
+	table.insert(self.hand, card)
+	return card
+end
+
+function refill_card(self)
+	local cards = {}
+	while self.card<MAX_HAND do
+		table.insert(cards, draw(self))
+	end
+	return cards
+end
