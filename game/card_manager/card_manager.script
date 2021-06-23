@@ -3,7 +3,7 @@ local MAX_HAND = 4
 function init(self)
 	math.randomseed(os.time())
 	self.deck = {{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2}}
-	self.hand={}
+	self.hand_count=0
 	CHARACTER = {"army", "scientist", "shaman", "gambler", "neutral"}
 	msg.post(".", "turn_end")
 end
@@ -21,13 +21,16 @@ function on_message(self, message_id, message, sender)
 	if message_id == hash("turn_end") then
 		msg.post(HAND, "draw", {card = refill_card(self)})
 	end
+	if message_id == hash("use") then
+		self.hand_count=self.hand_count-1
+	end
 end
 
 function draw(self)
 	local num = math.random(1, #self.deck)
 	local card = self.deck[num]
 	table.remove(self.deck, num)
-	table.insert(self.hand, card)
+	self.hand_count=self.hand_count+1
 	return card
 end
 
