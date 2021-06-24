@@ -1,0 +1,68 @@
+local LINE
+local BOX
+local CARD_LIST_CROSS
+local VERTICAL_OFFSET = 320
+local MIN_BOX_HEIGHT = 275
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	LINE = gui.get_node("line")
+	BOX = gui.get_node("box")
+	--CARD_LIST_CROSS=gui.get_node("option/cross")
+	self.line = 4
+
+	for i = 1, self.line do
+		local line = gui.clone_tree(LINE)[hash("line")]
+		local pos = gui.get_position(line)
+		pos.y = pos.y - VERTICAL_OFFSET * i
+		gui.set_position(line, pos)
+		msg.post(".", "box_expended")
+	end
+end
+
+function final(self)
+	-- Add finalization code here
+	-- Learn more: https://defold.com/manuals/script/
+	-- Remove this function if not needed
+end
+
+function update(self, dt)
+	local pos = gui.get_position(BOX)
+	if pos.y < MIN_BOX_HEIGHT then
+		pos.y = MIN_BOX_HEIGHT
+		gui.set_position(BOX, pos)
+	end
+	if pos.y > self.line * 330 then
+		pos.y = self.line * 330 + 50
+		gui.set_position(BOX, pos)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("box_expended") then
+		local size = gui.get_size(BOX)
+		size.y = size.y + VERTICAL_OFFSET
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id==hash("wheel_up") then
+		if action.value == 1 then
+			local pos = gui.get_position(BOX)
+			pos.y = pos.y - 100
+			gui.set_position(BOX, pos)
+		end
+	elseif action_id==hash("wheel_down") then
+		if action.value == 1 then
+			local pos = gui.get_position(BOX)
+			pos.y = pos.y + 100
+			gui.set_position(BOX, pos)
+		end
+	end
+end
+
+function on_reload(self)
+	-- Add reload-handling code here
+	-- Learn more: https://defold.com/manuals/hot-reload/
+	-- Remove this function if not needed
+end
