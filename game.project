@@ -17,3 +17,6 @@ title = LeadersGameJam1
 dependencies#0 = https://github.com/rgrams/rendercam/archive/1.0.3.zip
 dependencies#1 = https://github.com/rgrams/debug-draw/archive/master.zip
 
+[sprite]
+max_count = 2048
+

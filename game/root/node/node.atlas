@@ -1,133 +1,133 @@
 images {
-  image: "/resource/survivor_icon/01.png"
+  image: "/resource/node/01.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/02.png"
+  image: "/resource/node/02.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/03.png"
+  image: "/resource/node/03.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/04.png"
+  image: "/resource/node/04.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/05.png"
+  image: "/resource/node/05.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/06.png"
+  image: "/resource/node/06.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/07.png"
+  image: "/resource/node/07.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/08.png"
+  image: "/resource/node/08.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/09.png"
+  image: "/resource/node/09.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/10.png"
+  image: "/resource/node/10.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/11.png"
+  image: "/resource/node/11.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/12.png"
+  image: "/resource/node/12.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/14.png"
+  image: "/resource/node/14.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/15.png"
+  image: "/resource/node/15.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/16.png"
+  image: "/resource/node/16.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/17.png"
+  image: "/resource/node/17.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/18.png"
+  image: "/resource/node/18.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/19.png"
+  image: "/resource/node/19.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/20.png"
+  image: "/resource/node/20.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/21.png"
+  image: "/resource/node/21.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/22.png"
+  image: "/resource/node/22.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/23.png"
+  image: "/resource/node/23.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/24.png"
+  image: "/resource/node/24.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/25.png"
+  image: "/resource/node/25.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/26.png"
+  image: "/resource/node/26.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/27.png"
+  image: "/resource/node/27.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/28.png"
+  image: "/resource/node/28.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/29.png"
+  image: "/resource/node/29.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/30.png"
+  image: "/resource/node/30.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/31.png"
+  image: "/resource/node/31.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/32.png"
+  image: "/resource/node/32.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/33.png"
+  image: "/resource/node/33.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 images {
-  image: "/resource/survivor_icon/34.png"
+  image: "/resource/node/34.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

@@ -1,12 +1,14 @@
-local LEVEL_OFFSET = 10
-local MAX_NODE_PER_LEVEL=3
-local MIN_NODE_PER_LEVEL=1
+local LEVEL_OFFSET = 4
+local MAX_NODE_PER_LEVEL=4
+local MIN_NODE_PER_LEVEL=3
 local MIN_DISTANCE = 150
 local LEVEL_GENERATOR = "#level_generator"
-local DEFAULT_NODE = "/node"
-local DEFAULT_Y = 100
-local DEFAULT_X = 200
+local BASE_NODE = "/base"
+local BASE_VER= vmath.vector3(-200,400,0)
+local DEFAULT_VER = vmath.vector3(100,-200,0)
+local DEFAULT_HOR = vmath.vector3(300,150,0)
 local ANIM_NUM = 30
+local BOSS ={ "/boss1","/boss2","/boss3"}
 local debugdraw = require "debug-draw.debug-draw"
 function deepcopy(orig)
 	local orig_type = type(orig)
@@ -23,10 +25,77 @@ function deepcopy(orig)
 	return copy
 end
 
+function generate_node(self,base,level_count)
+	if level_count == 1 then
+		self.stage_flag=self.stage_flag+1
+		self.nodes[self.stage_flag]={}
+	end
+	self.nodes[self.stage_flag][level_count]={}
+	local level_num = math.random(MIN_NODE_PER_LEVEL,MAX_NODE_PER_LEVEL)
+	for i=1,level_num do
+		local node = factory.create("#node",go.get_position(base)+BASE_VER+DEFAULT_HOR*level_count+DEFAULT_VER*i,nil,{anim=ANIM_NUM,level=level_count,index=i})
+		table.insert(self.nodes[self.stage_flag][level_count], {node=node,previous={}})
+	end
+	if level_count<LEVEL_OFFSET then
+		generate_node(self,base,level_count+1)
+	end
+end
+function link_node(self,base_node,end_node)
+	local first = self.nodes[self.stage_flag][1]
+	for i=1,#first do
+		table.insert(first[i].previous, base_node)
+	end
+	for i=#self.nodes[self.stage_flag],2,-1 do
+		local current = self.nodes[self.stage_flag][i]
+		local previous = deepcopy(self.nodes[self.stage_flag][i-1])
+		if #current<#previous then
+			table.insert(current[#current].previous, previous[#previous].node)
+		end
+		for j=1,#current do
+			for k=1,#previous do
+				if k==j or k+1==j then
+					table.insert(current[j].previous, previous[k].node)
+				end
+			end
+		end
+	end
+	self.nodes[self.stage_flag][#self.nodes[self.stage_flag]+1]={}
+	table.insert(self.nodes[self.stage_flag][#self.nodes[self.stage_flag]], {node=end_node,previous={}})
+	for i=1,#self.nodes[self.stage_flag][#self.nodes[self.stage_flag]-1] do
+		table.insert(self.nodes[self.stage_flag][#self.nodes[self.stage_flag]][1].previous,self.nodes[self.stage_flag][#self.nodes[self.stage_flag]-1][i].node)
+	end
+end
+local function draw_line(from, to)
+	local dir=vmath.normalize(to-from)
+	local len = vmath.length(to-from)
+	local rot = vmath.quat_from_to(vmath.vector3(1,0,0), dir)
+	factory.create("#path",(from+to)/2,rot,nil,vmath.vector3(0.0007*len,15/len,1))
+end
 
 function init(self)
 	math.randomseed(os.time())
-	self.base_node={"/base","/boss1","/boss2","/boss3","/boss4"}
-	self.base_node
+	self.stage_flag=0
+	self.nodes={}
+	generate_node(self,BASE_NODE,1)
+	link_node(self,BASE_NODE,BOSS[1])
+	generate_node(self,BOSS[1],1)
+	link_node(self,BOSS[1],BOSS[2])
+	generate_node(self,BOSS[2],1)
+	link_node(self,BOSS[2],BOSS[3])
+	for i=1,#self.nodes do
+		for j=1,#self.nodes[i] do
+			for k=1, #self.nodes[i][j] do
+				for l=1,#self.nodes[i][j][k].previous do
+					local from = go.get_position(self.nodes[i][j][k].node)
+					local to = go.get_position(self.nodes[i][j][k].previous[l])
+					draw_line(from,to)
+				end
+			end
+		end
+	end
+end
+
+function update(self, dt)
 	
 end
+
