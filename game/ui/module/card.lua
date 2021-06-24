@@ -16,6 +16,7 @@ function C.create(node,card,pos,character,title,effect,cost,hold)
 		gui.set_color(new_card.node, COLOR[new_card.character][1])
 		gui.set_text(new_card.root[hash("card_sample/explain")],new_card.effect)
 		gui.set_text(new_card.root[hash("card_sample/title")],new_card.title)
+		gui.set_text(new_card.root[hash("card_sample/cost")],new_card.cost)
 	end
 	function new_card:change_position(pos)
 		gui.set_position(new_card.node, pos)
@@ -26,8 +27,12 @@ function C.create(node,card,pos,character,title,effect,cost,hold)
 	function new_card:change_scale(scale)
 		gui.set_scale(new_card.node, scale)
 	end
+	function new_card:change_layer(layer)
+		gui.set_layer(new_card.node, layer)
+	end
+	
 	function new_card:return_to_hand()
-		gui.animate(new_card.node, "position", gui.get_screen_position(new_card.pos), go.EASING_LINEAR, 0.2)
+		gui.animate(new_card.node, "position",gui.get_screen_position(new_card.pos), go.EASING_LINEAR, 0.2)
 		gui.animate(new_card.node, "rotation",  gui.get_rotation(new_card.pos), go.EASING_LINEAR, 0.1)
 		gui.animate(new_card.node, "scale",  gui.get_scale(new_card.pos), go.EASING_LINEAR, 0.1)
 	end

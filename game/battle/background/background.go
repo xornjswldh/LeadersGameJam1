@@ -1,8 +1,8 @@
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "tile_set: \"/game/character/character.tilesource\"\n"
-  "default_animation: \"1\"\n"
+  data: "tile_set: \"/game/battle/background/background.atlas\"\n"
+  "default_animation: \"background_battle3\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""

@@ -2,7 +2,8 @@ local card = require "game.ui.module.card"
 local INITAIL_POS=vmath.vector3(640,-100,0)
 local DETAIL_VIEW=vmath.vector3(1.5,1.5,1)
 local GENERAL_VIEW=vmath.vector3(1,1,1)
-
+local EMPHASIZE_VIEW=vmath.vector3(1.2,1.2,1)
+local SUBMIT_VIEW=vmath.vector3(0.7,0.7,1)
 local SAMPLE
 local SUBMIT_AREA
 local CHARACTER_MANAGER="main:/character_manager"
@@ -44,7 +45,7 @@ function on_message(self, message_id, message, sender)
 			local pos = gui.get_node("pos"..tostring(#self.card+1).."_"..tostring(#self.card+1))
 			local node = gui.clone_tree(SAMPLE)
 			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,message.card[i].character,message.card[i].title, message.card[i].effect, message.card[i].cost)
-			
+			new_card:change_layer("layer1")
 			table.insert(self.card,new_card)
 			new_card:initialize()
 			new_card:create_to_hand(INITAIL_POS)
@@ -54,12 +55,25 @@ end
 
 function on_input(self, action_id, action)
 	local action_pos=vmath.vector3(action.x,action.y,0)
+	if not action_id then
+		for i = 1, #self.card do
+			local input_card= self.card[i].node
+			if gui.pick_node(input_card, action.x, action.y) and not self.hold_card then
+				gui.set_scale(input_card, EMPHASIZE_VIEW)
+			else
+				gui.set_scale(input_card, GENERAL_VIEW)
+			end
+		end
+	end
 	if action_id==hash("touch") then
 		if self.hold_card then
+			self.hold_card:change_layer("layer2")
 			self.hold_card:change_position(action_pos)
 			self.hold_card:change_rotation(vmath.vector3(0,0,0))
 			self.hold_card:change_scale(DETAIL_VIEW)
-			
+			if gui.pick_node(SUBMIT_AREA, action.x, action.y) then
+				self.hold_card:change_scale(SUBMIT_VIEW)
+			end
 		end
 		
 		if action.released then
@@ -70,6 +84,7 @@ function on_input(self, action_id, action)
 				else
 					card_added(self)
 					table.insert(self.card,self.hold_card)
+					self.hold_card:change_layer("layer1")
 					self.hold_card.return_to_hand()
 				end
 			end

@@ -1,4 +1,5 @@
 local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
+local CHARACTER_ANIM ={["군인"]="12",["과학자"]="4",["도박사"]="2",["경찰"]="11"}
 local CM ="ingame:/card_manager"
 local CHARACTER={
 	["군인"]={hp=70,avoid=0.1,
@@ -27,7 +28,6 @@ local CHARACTER={
 function init(self)
 	self.party={}
 	self.party["군인"] = CHARACTER["군인"]
-	self.party["경찰"] = CHARACTER["경찰"]
 end
 
 function on_message(self, message_id, message, sender)
@@ -55,7 +55,6 @@ function on_message(self, message_id, message, sender)
 	end
 	if message_id == hash("turn_begin") then
 		local cards = {}
-	
 		for i=1,#CHARACTER_NAME do
 			local name = CHARACTER_NAME[i]
 			if self.party[name] then
@@ -65,5 +64,13 @@ function on_message(self, message_id, message, sender)
 			end
 		end
 		msg.post(CM, "generate_deck",{cards=cards})
+		local num =1
+		for i=1,#CHARACTER_NAME do
+			local name = CHARACTER_NAME[i]
+			if self.party[name] then
+				msg.post("ingame:/character_spawner", "spawn",{anim=i,num=num})
+				num=num+1
+			end
+		end
 	end
 end
