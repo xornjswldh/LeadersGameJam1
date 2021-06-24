@@ -1,4 +1,4 @@
-
+local GM ="main:/game_manager"
 local PROXY="main:/scene_proxy"
 local RED = vmath.vector4(1,0,0,1)
 local WHITE = vmath.vector4(1,1,1,1)
@@ -44,6 +44,11 @@ function on_input(self, action_id, action)
 			msg.post(self.creator, "destroy")
 		end
 		if gui.pick_node(self.title_btn, action.x, action.y) then
+			msg.post(PROXY, "show_scene")
+			msg.post("main:/game_manager#ingame", "disable")
+			msg.post("main:/game_manager#ingame", "final")
+			msg.post("main:/game_manager#ingame", "unload")
+			msg.post(GM, "reset")
 			msg.post(PROXY, "change_scene",{next="#title"})
 		end
 	end

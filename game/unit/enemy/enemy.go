@@ -1,26 +1,6 @@
 components {
-  id: "character"
-  component: "/game/party/character/character.script"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-}
-embedded_components {
-  id: "sprite"
-  type: "sprite"
-  data: "tile_set: \"/game/party/character/character.tilesource\"\n"
-  "default_animation: \"1\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
-  "blend_mode: BLEND_MODE_ALPHA\n"
-  ""
+  id: "enemy"
+  component: "/game/unit/enemy/enemy.script"
   position {
     x: 0.0
     y: 0.0
@@ -36,8 +16,8 @@ embedded_components {
 embedded_components {
   id: "hp"
   type: "sprite"
-  data: "tile_set: \"/game/party/character/hp/hp.atlas\"\n"
-  "default_animation: \"hp\"\n"
+  data: "tile_set: \"/game/unit/character/hp/hp.atlas\"\n"
+  "default_animation: \"hp_enemy\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
@@ -56,7 +36,7 @@ embedded_components {
 embedded_components {
   id: "hp_bar"
   type: "sprite"
-  data: "tile_set: \"/game/party/character/hp/hp.atlas\"\n"
+  data: "tile_set: \"/game/unit/character/hp/hp.atlas\"\n"
   "default_animation: \"hp_bar\"\n"
   "material: \"/builtins/materials/sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
@@ -121,6 +101,26 @@ embedded_components {
     x: 0.0
     y: -18.0
     z: 0.7
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+}
+embedded_components {
+  id: "sprite"
+  type: "sprite"
+  data: "tile_set: \"/game/unit/character.tilesource\"\n"
+  "default_animation: \"1\"\n"
+  "material: \"/defblend/materials/sprite/blend_overlay_pixel.material\"\n"
+  "blend_mode: BLEND_MODE_ALPHA\n"
+  ""
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
   }
   rotation {
     x: 0.0

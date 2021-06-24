@@ -1,8 +1,10 @@
-go.property("anim", 1)
-local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
-local CHARACTER_ANIM ={["군인"]="12",["과학자"]="4",["도박사"]="2",["경찰"]="11"}
+go.property("anim", 17)
+go.property("hp", 100)
+go.property("attack", 10)
 function init(self)
-	msg.post("#sprite", "play_animation",{id=hash(CHARACTER_ANIM[CHARACTER_NAME[self.anim]])})
+	msg.post("#sprite", "play_animation",{id=hash(tostring(self.anim))})
+	self.max_hp=self.hp
+	msg.post(".", "hp_update")
 end
 
 function final(self)
@@ -18,9 +20,13 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id==hash("hp_update") then
+		if message.damage then
+			self.hp=self.hp-message.damage
+		end
+		label.set_text("#hp_rate", tostring(self.hp).."/"..tostring(self.max_hp))
+		go.set("#hp", "scale.x", self.hp/self.max_hp)
+	end
 end
 
 function on_input(self, action_id, action)

@@ -60,7 +60,9 @@ function on_input(self, action_id, action)
 			local input_card= self.card[i].node
 			if gui.pick_node(input_card, action.x, action.y) and not self.hold_card then
 				gui.set_scale(input_card, EMPHASIZE_VIEW)
+				self.card[i]:wiggle()
 			else
+				self.card[i]:cancel_wiggle()
 				gui.set_scale(input_card, GENERAL_VIEW)
 			end
 		end
@@ -73,6 +75,9 @@ function on_input(self, action_id, action)
 			self.hold_card:change_scale(DETAIL_VIEW)
 			if gui.pick_node(SUBMIT_AREA, action.x, action.y) then
 				self.hold_card:change_scale(SUBMIT_VIEW)
+				self.hold_card:shake()
+			else
+				self.hold_card:cancel_shake()
 			end
 		end
 		

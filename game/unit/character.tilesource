@@ -83,7 +83,7 @@ animations {
   end_tile: 17
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -92,7 +92,7 @@ animations {
   end_tile: 18
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -101,7 +101,7 @@ animations {
   end_tile: 19
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -119,7 +119,7 @@ animations {
   end_tile: 20
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -128,7 +128,7 @@ animations {
   end_tile: 21
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -137,7 +137,7 @@ animations {
   end_tile: 22
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -146,7 +146,7 @@ animations {
   end_tile: 23
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {
@@ -155,7 +155,7 @@ animations {
   end_tile: 24
   playback: PLAYBACK_ONCE_FORWARD
   fps: 30
-  flip_horizontal: 0
+  flip_horizontal: 1
   flip_vertical: 0
 }
 animations {

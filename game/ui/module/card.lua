@@ -8,7 +8,7 @@ local COLOR = {
 	["중립"]={vmath.vector4(1,1,1,1),vmath.vector4(1,1,1,1),vmath.vector4(1,1,1,1)}
 }
 function C.create(node,card,pos,character,title,effect,cost,hold)
-	local new_card={root=node,node=card,pos=pos,character=character,title=title,effect=effect,cost=cost,hold=false}
+	local new_card={root=node,node=card,pos=pos,character=character,title=title,effect=effect,cost=cost,hold=false,wiggling=false,shaking=false}
 	function new_card:initialize()
 		gui.set_color(new_card.root[hash("card_sample/inner_frame")], COLOR[new_card.character][2])
 		gui.set_color(new_card.root[hash("card_sample/explain_area")], COLOR[new_card.character][3])
@@ -30,7 +30,28 @@ function C.create(node,card,pos,character,title,effect,cost,hold)
 	function new_card:change_layer(layer)
 		gui.set_layer(new_card.node, layer)
 	end
-	
+	function new_card:wiggle(layer)
+		if	new_card.wiggling == false then
+			gui.animate(new_card.node, "rotation.z",  gui.get_rotation(new_card.pos).z+2, go.EASING_LINEAR, 0.3,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
+			new_card.wiggling =true
+		end
+	end
+	function new_card:shake(layer)
+		if	new_card.shaking == false then
+			gui.set_rotation(new_card.node,vmath.vector3(0,0,3))
+			gui.animate(new_card.node, "rotation.z",-3, go.EASING_LINEAR, 0.2,0,nil,gui.PLAYBACK_LOOP_PINGPONG)
+			new_card.shaking =true
+		end
+	end
+	function new_card:cancel_wiggle()
+		gui.cancel_animation(new_card.node, "rotation")
+		new_card:return_to_hand()
+		new_card.wiggling = false
+	end
+	function new_card:cancel_shake()
+		gui.cancel_animation(new_card.node, "rotation")
+		new_card.shaking = false
+	end
 	function new_card:return_to_hand()
 		gui.animate(new_card.node, "position",gui.get_screen_position(new_card.pos), go.EASING_LINEAR, 0.2)
 		gui.animate(new_card.node, "rotation",  gui.get_rotation(new_card.pos), go.EASING_LINEAR, 0.1)

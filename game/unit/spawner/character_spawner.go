@@ -1,6 +1,6 @@
 components {
   id: "character_spawner"
-  component: "/game/party/character_spawner/character_spawner.script"
+  component: "/game/unit/spawner/character_spawner.script"
   position {
     x: 0.0
     y: 0.0
@@ -16,7 +16,7 @@ components {
 embedded_components {
   id: "character"
   type: "factory"
-  data: "prototype: \"/game/party/character/character.go\"\n"
+  data: "prototype: \"/game/unit/character/character.go\"\n"
   "load_dynamically: true\n"
   ""
   position {

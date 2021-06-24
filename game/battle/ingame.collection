@@ -61,7 +61,7 @@ instances {
 }
 instances {
   id: "character_spawner"
-  prototype: "/game/party/character_spawner/character_spawner.go"
+  prototype: "/game/unit/spawner/character_spawner.go"
   position {
     x: 0.0
     y: 0.0
@@ -99,13 +99,33 @@ instances {
     z: 1.0
   }
 }
+instances {
+  id: "battle_manager"
+  prototype: "/game/manager/battle_manager/battle_manager.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
 scale_along_z: 0
 embedded_instances {
   id: "party1"
   data: ""
   position {
-    x: -200.0
-    y: 0.0
+    x: -100.0
+    y: -40.0
     z: 0.0
   }
   rotation {
@@ -124,8 +144,8 @@ embedded_instances {
   id: "party2"
   data: ""
   position {
-    x: -400.0
-    y: 200.0
+    x: -226.0
+    y: -42.0
     z: 0.0
   }
   rotation {
@@ -144,8 +164,68 @@ embedded_instances {
   id: "party3"
   data: ""
   position {
-    x: -600.0
+    x: -400.0
+    y: -120.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
     y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "enemy1"
+  data: ""
+  position {
+    x: 100.0
+    y: -40.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "enemy2"
+  data: ""
+  position {
+    x: 267.0
+    y: -56.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+embedded_instances {
+  id: "enemy3"
+  data: ""
+  position {
+    x: 400.0
+    y: -120.0
     z: 0.0
   }
   rotation {

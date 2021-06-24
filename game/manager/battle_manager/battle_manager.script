@@ -1,37 +1,48 @@
+local GM = "main:/game_manager"
+local ENEMY = {
+	{hp=10,attack=2,many=1},
+	{hp=12,attack=3,many=2},
+	{hp=14,attack=4,many=2},
+	{hp=16,attack=5,many=2},
+	{hp=60,attack=9,many=1,boss=true},
+	{hp=18,attack=6,many=1},
+	{hp=20,attack=8,many=1},
+	{hp=22,attack=12,many=2},
+	{hp=24,attack=14,many=2},
+	{hp=80,attack=15,many=1,boss=true},
+	{hp=30,attack=9,many=3},
+	{hp=32,attack=10,many=3},
+	{hp=34,attack=12,many=3},
+	{hp=36,attack=14,many=3},
+	{hp=100,attack=20,many=1,boss=true}
+}
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
-
-function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
-
-function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	math.randomseed(os.time())
+	msg.post(GM, "stage_request")
+	msg.post(".", "acquire_input_focus")
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id==hash("stage_response") then
+		local enemy = ENEMY[message.stage]
+		for i=1,enemy.many do
+			factory.create("#enemy",go.get_position("enemy"..tostring(i)),nil,{anim=math.random(17,24),hp=enemy.hp,attack=enemy.attack},4)
+		end
+	end
+	if message_id==hash("destroy") then
+		msg.post(".", "acquire_input_focus")
+		msg.post("/hand", "acquire_input_focus")
+	end
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+	if action_id==hash("menu") and action.pressed  then
+		msg.post(".", "release_input_focus")
+		msg.post("/hand", "release_input_focus")
+		local exit = factory.create("#exit_menu",nil,nil)
+		msg.post(exit, "creator",{creator=msg.url()})
+		
+	end
 end
 
 function on_reload(self)

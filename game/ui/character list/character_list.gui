@@ -9,7 +9,7 @@ textures {
 }
 textures {
   name: "character"
-  texture: "/game/party/character/character.tilesource"
+  texture: "/game/unit/character.tilesource"
 }
 background_color {
   x: 0.0

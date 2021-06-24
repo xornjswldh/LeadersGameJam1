@@ -68,7 +68,7 @@ function on_message(self, message_id, message, sender)
 		for i=1,#CHARACTER_NAME do
 			local name = CHARACTER_NAME[i]
 			if self.party[name] then
-				msg.post("ingame:/character_spawner", "spawn",{anim=i,num=num})
+				msg.post("ingame:/character_spawner", "spawn",{anim=i,num=num,hp=self.party[name].hp,avoid=self.party[name].avoid,effect=self.party[name].effect})
 				num=num+1
 			end
 		end

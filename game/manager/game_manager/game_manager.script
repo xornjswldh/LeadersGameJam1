@@ -1,9 +1,11 @@
 local RM = "scene:/root_manager"
 local TOUCH = "scene:/touch"
 local PROXY = "main:/scene_proxy"
+
 function initailize(self)
 	self.location=vmath.vector3(1,0,0)
-	
+	self.stage=1
+	self.ingame=false
 end
 
 function init(self)
@@ -13,6 +15,12 @@ function init(self)
 end
 
 function on_message(self, message_id, message, sender)
+	if message_id==hash("reset") then
+		initailize(self)
+	end
+	if message_id==hash("stage_request") then
+		msg.post(sender, "stage_response",{stage=self.stage})
+	end
 	if message_id==hash("root_update") then
 		msg.post(TOUCH, "player_data",{location=self.location})
 	end
@@ -21,10 +29,12 @@ function on_message(self, message_id, message, sender)
 	end
 	if message_id==hash("move") then
 		self.location=message.location
+		self.stage=self.stage+1
 		msg.post(PROXY, "hide_scene")
 		msg.post("#ingame", "load")
 	end
 	if message_id==hash("proxy_loaded") then
+		self.ingame=true
 		msg.post(sender, "init")
 		msg.post(sender, "enable")
 		msg.post(sender, "acquire_input_focus")
