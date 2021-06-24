@@ -1,6 +1,6 @@
 components {
   id: "card_List"
-  component: "/game/ui/card List/card_List.gui"
+  component: "/game/ui/card List/card_list.gui"
   position {
     x: 0.0
     y: 0.0

@@ -1,15 +1,17 @@
 local LINE
 local BOX
+local WINDOW
 local CARD_LIST_CROSS
 local VERTICAL_OFFSET = 320
 local MIN_BOX_HEIGHT = 275
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+	self.line = 4
 	LINE = gui.get_node("line")
 	BOX = gui.get_node("box")
-	--CARD_LIST_CROSS=gui.get_node("option/cross")
-	self.line = 4
+	WINDOW = gui.get_node("window")
+	CARD_LIST_CROSS=gui.get_node("cross")
 
 	for i = 1, self.line do
 		local line = gui.clone_tree(LINE)[hash("line")]
@@ -18,12 +20,6 @@ function init(self)
 		gui.set_position(line, pos)
 		msg.post(".", "box_expended")
 	end
-end
-
-function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
 end
 
 function update(self, dt)
@@ -59,10 +55,11 @@ function on_input(self, action_id, action)
 			gui.set_position(BOX, pos)
 		end
 	end
-end
 
-function on_reload(self)
-	-- Add reload-handling code here
-	-- Learn more: https://defold.com/manuals/hot-reload/
-	-- Remove this function if not needed
+	if action_id == hash("touch") and action.pressed then
+		if gui.pick_node(CARD_LIST_CROSS, action.x, action.y) then
+			gui.set_enabled(WINDOW, false)
+			
+		end
+	end
 end
