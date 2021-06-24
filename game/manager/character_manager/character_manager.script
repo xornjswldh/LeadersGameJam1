@@ -38,6 +38,18 @@ function on_message(self, message_id, message, sender)
 		self.character["군인"] = CHARACTER["군인"]
 		self.party["군인"]=self.character["군인"]
 	end
+	if message_id == hash("request_card") then
+		local cards = {}
+		for i=1,#CHARACTER_NAME do
+			local name = CHARACTER_NAME[i]
+			if self.party[name] then
+				for j=1,#self.party[name].cards do
+					table.insert(cards,self.party[name].cards[j])
+				end
+			end
+		end
+		msg.post(sender, "response_card",{cards=cards})
+	end
 	if message_id == hash("update_character") then
 		self.character[message.name] = CHARACTER[message.name]
 	end

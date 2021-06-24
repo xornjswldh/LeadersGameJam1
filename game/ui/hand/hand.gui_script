@@ -2,6 +2,7 @@ local card = require "game.ui.module.card"
 local INITAIL_POS=vmath.vector3(640,-100,0)
 local DETAIL_VIEW=vmath.vector3(1.5,1.5,1)
 local GENERAL_VIEW=vmath.vector3(1,1,1)
+
 local SAMPLE
 local SUBMIT_AREA
 local CHARACTER_MANAGER="main:/character_manager"
@@ -42,8 +43,10 @@ function on_message(self, message_id, message, sender)
 			end
 			local pos = gui.get_node("pos"..tostring(#self.card+1).."_"..tostring(#self.card+1))
 			local node = gui.clone_tree(SAMPLE)
-			local new_card = card.create(node[hash("card_sample/outter_frame")], pos,message.card[i].character,message.card[i].title, message.card[i].effect, message.card[i].cost)
+			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,message.card[i].character,message.card[i].title, message.card[i].effect, message.card[i].cost)
+			
 			table.insert(self.card,new_card)
+			new_card:initialize()
 			new_card:create_to_hand(INITAIL_POS)
 		end
 	end

@@ -1,35 +1,28 @@
-
+local card = require "game.ui.module.card"
 local CARD_HORIZONTAL_OFFSET = 220
 local MIN_CARD_BOX_POS_X = -600
 local ROOT_MENU = "scene:/root_menu"
+local CHARACTER_MANGER = "main:/character_manager"
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	self.card = gui.get_node("card/outter_frame")
+	self.card = {}
 	self.card_box = gui.get_node("card_box")
 	self.window = gui.get_node("window")
-	
-	self.card_list_cross = gui.get_node("cross")
-	self.card_num = 10
-
-	for i = 1, self.card_num do
-		local card = gui.clone_tree(self.card)[hash("card/outter_frame")]
-		local pos = gui.get_position(card)
-		pos.x = pos.x + CARD_HORIZONTAL_OFFSET * i
-		gui.set_position(card, pos)
-		msg.post(".", "card_box_expended")
-	end
-	print(gui.get_position(self.card))
+	self.card_list_cross = gui.get_node("cross") 
+	msg.post(CHARACTER_MANGER, "request_card")
 end
 
 function update(self, dt)
 	local pos = gui.get_position(self.card_box)
 	if pos.x > MIN_CARD_BOX_POS_X then
 		pos.x = MIN_CARD_BOX_POS_X
-		gui.set_position(CARD_BOX, pos)
-	end
-	if pos.x < -(self.card_num * CARD_HORIZONTAL_OFFSET) + 360 then
-		pos.x = -(self.card_num * CARD_HORIZONTAL_OFFSET) + 360
 		gui.set_position(self.card_box, pos)
+	end
+	if #self.card>0 then
+		if pos.x < -(#self.card * CARD_HORIZONTAL_OFFSET) + 360 then
+			pos.x = -(#self.card * CARD_HORIZONTAL_OFFSET) + 360
+			gui.set_position(self.card_box, pos)
+		end
 	end
 end
 
@@ -38,8 +31,18 @@ function on_message(self, message_id, message, sender)
 		local size = gui.get_size(self.card_box)
 		size.x = size.x + CARD_HORIZONTAL_OFFSET
 	end
-	if message_id == hash("character_data") then
-		
+	if message_id == hash("response_card") then
+		self.card = message.cards
+		local sample = gui.get_node("card_sample/outter_frame")
+		for i = 1, #self.card do
+			local node = gui.clone_tree(sample)
+			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,self.card[i].character,self.card[i].title, self.card[i].effect, self.card[i].cost)
+			local pos = vmath.vector3(-120,0,0)
+			pos.x = pos.x + CARD_HORIZONTAL_OFFSET * i
+			new_card:initialize()
+			gui.set_position(new_card.node, pos)
+			msg.post(".", "card_box_expended")
+		end
 	end
 end
 
