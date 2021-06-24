@@ -1,10 +1,13 @@
 local CAM="/camera"
 local MIN_CAM_HEIGHT = -100
 local MIN_CAM_X = -200
+local rendercam = require "rendercam.rendercam"
+go.property("location", vmath.vector3(0,0,0))
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.press=false
 	self.press_pos=vmath.vector3()
+	self.node=nil
 end
 
 
@@ -18,15 +21,30 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id==hash("player_data") then
+		self.location=message.location
+	end
+	if message_id==hash("trigger_response") then
+		if message.enter then
+			msg.post(message.other_id, "hover",{location=self.location})
+			self.node=message.other_id
+		else
+			msg.post(message.other_id, "leave")
+			self.node=nil
+		end
+	end
 end
 
 function on_input(self, action_id, action)
-	local action_pos = vmath.vector3(action.x,action.y,0)
+	local action_pos = rendercam.screen_to_world_2d(action.screen_x, action.screen_y)
 	local cam_pos = go.get_position(CAM)
+	if not action_id then
+		go.set_position(action_pos)
+	end
 	if action_id==hash("touch") then
+		if self.node and action.pressed then
+			msg.post(self.node, "move",{location=self.location})
+		end
 		if action.pressed then
 			self.press=true
 			self.press_pos = action_pos

@@ -13,9 +13,17 @@ instances {
     z: 0.0
     w: 1.0
   }
+  component_properties {
+    id: "node"
+    properties {
+      id: "initial_scale"
+      value: "0.2, 0.2, 1.0"
+      type: PROPERTY_TYPE_VECTOR3
+    }
+  }
   scale3 {
-    x: 1.0
-    y: 1.0
+    x: 0.2
+    y: 0.2
     z: 1.0
   }
 }
@@ -40,28 +48,9 @@ instances {
   }
 }
 instances {
-  id: "root_manager"
-  prototype: "/game/manager/root_manager/root_manager.go"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-instances {
   id: "camera"
   prototype: "/rendercam/camera.go"
+  children: "background"
   position {
     x: 0.0
     y: 0.0
@@ -88,26 +77,6 @@ instances {
   }
 }
 instances {
-  id: "base1"
-  prototype: "/game/root/node/node.go"
-  position {
-    x: -200.0
-    y: -100.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
-}
-instances {
   id: "boss1"
   prototype: "/game/root/node/node.go"
   position {
@@ -121,9 +90,22 @@ instances {
     z: 0.0
     w: 1.0
   }
+  component_properties {
+    id: "node"
+    properties {
+      id: "anim"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "initial_scale"
+      value: "0.5, 0.5, 1.0"
+      type: PROPERTY_TYPE_VECTOR3
+    }
+  }
   scale3 {
-    x: 1.0
-    y: 1.0
+    x: 0.5
+    y: 0.5
     z: 1.0
   }
 }
@@ -141,9 +123,22 @@ instances {
     z: 0.0
     w: 1.0
   }
+  component_properties {
+    id: "node"
+    properties {
+      id: "anim"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "initial_scale"
+      value: "0.5, 0.5, 1.0"
+      type: PROPERTY_TYPE_VECTOR3
+    }
+  }
   scale3 {
-    x: 1.0
-    y: 1.0
+    x: 0.5
+    y: 0.5
     z: 1.0
   }
 }
@@ -161,9 +156,62 @@ instances {
     z: 0.0
     w: 1.0
   }
+  component_properties {
+    id: "node"
+    properties {
+      id: "anim"
+      value: "3.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "initial_scale"
+      value: "0.5, 0.5, 1.0"
+      type: PROPERTY_TYPE_VECTOR3
+    }
+  }
+  scale3 {
+    x: 0.5
+    y: 0.5
+    z: 1.0
+  }
+}
+instances {
+  id: "root_manager"
+  prototype: "/game/manager/root_manager/root_manager.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
   scale3 {
     x: 1.0
     y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "background"
+  prototype: "/game/root/background/background.go"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.2
+    y: 1.2
     z: 1.0
   }
 }

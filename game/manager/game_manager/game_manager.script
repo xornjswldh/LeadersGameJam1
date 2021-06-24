@@ -1,0 +1,32 @@
+local RM = "scene:/root_manager"
+local TOUCH = "scene:/touch"
+local PROXY = "main:/scene_proxy"
+function initailize(self)
+	self.location=vmath.vector3(1,0,0)
+	
+end
+
+function init(self)
+	self.sfx=50
+	self.bgm=50
+	initailize(self)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id==hash("root_update") then
+		msg.post(TOUCH, "player_data",{location=self.location})
+	end
+	if message_id==hash("clear") then
+		msg.post(RM, "clear",{location=self.location})
+	end
+	if message_id==hash("move") then
+		self.location=message.location
+		msg.post(PROXY, "hide_scene")
+		msg.post("#ingame", "load")
+	end
+	if message_id==hash("proxy_loaded") then
+		msg.post(sender, "init")
+		msg.post(sender, "enable")
+		msg.post(sender, "acquire_input_focus")
+	end
+end

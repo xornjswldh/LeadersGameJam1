@@ -1,4 +1,4 @@
-local HAND = "main:/hand"
+local HAND = "/hand"
 local MAX_HAND = 4
 function init(self)
 	math.randomseed(os.time())

@@ -1,4 +1,4 @@
-name: "scene"
+name: "ingame"
 instances {
   id: "card_manager"
   prototype: "/game/manager/card_manager/card_manager.go"

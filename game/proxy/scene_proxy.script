@@ -1,4 +1,5 @@
 go.property("scene", msg.url("#title"))
+local GM ="main:/game_manager"
 function init(self)
 	msg.post(self.scene, "load")
 end
@@ -8,6 +9,16 @@ function on_message(self, message_id, message, sender)
 		msg.post(sender, "init")
 		msg.post(sender, "enable")
 		msg.post(sender, "acquire_input_focus")
+		if self.scene == "#root" then
+			msg.post(GM, "root_update")
+		end
+	end
+	if message_id==hash("hide_scene") then
+		msg.post(self.scene, "disable")
+		msg.post(GM, "hide")
+	end
+	if message_id==hash("show_scene") then
+		msg.post(self.scene, "enable")
 	end
 	if message_id==hash("change_scene") then
 		msg.post(self.scene, "disable")
