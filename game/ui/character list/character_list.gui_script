@@ -1,68 +1,74 @@
-local CARD
-local CARD_BOX
-local WINDOW
-local CHARACTER_LIST_CROSS
+
 local CARD_HORIZONTAL_OFFSET = 220
 local MIN_CARD_BOX_POS_X = -600
-local ROOT_MENU
+local ROOT_MENU = "scene:/root_menu"
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	CARD = gui.get_node("card/outter_frame")
-	CARD_BOX = gui.get_node("card_box")
-	WINDOW = gui.get_node("window")
-	ROOT_MENU = "scene:/root_menu"
-	CHARACTER_LIST_CROSS = gui.get_node("cross")
+	self.card = gui.get_node("card/outter_frame")
+	self.card_box = gui.get_node("card_box")
+	self.window = gui.get_node("window")
+	
+	self.card_list_cross = gui.get_node("cross")
 	self.card_num = 10
 
 	for i = 1, self.card_num do
-		local card = gui.clone_tree(CARD)[hash("card/outter_frame")]
+		local card = gui.clone_tree(self.card)[hash("card/outter_frame")]
 		local pos = gui.get_position(card)
 		pos.x = pos.x + CARD_HORIZONTAL_OFFSET * i
 		gui.set_position(card, pos)
 		msg.post(".", "card_box_expended")
 	end
-	print(gui.get_position(CARD_BOX))
+	print(gui.get_position(self.card))
 end
 
 function update(self, dt)
-	local pos = gui.get_position(CARD_BOX)
+	local pos = gui.get_position(self.card_box)
 	if pos.x > MIN_CARD_BOX_POS_X then
 		pos.x = MIN_CARD_BOX_POS_X
 		gui.set_position(CARD_BOX, pos)
 	end
 	if pos.x < -(self.card_num * CARD_HORIZONTAL_OFFSET) + 360 then
 		pos.x = -(self.card_num * CARD_HORIZONTAL_OFFSET) + 360
-		gui.set_position(CARD_BOX, pos)
+		gui.set_position(self.card_box, pos)
 	end
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("card_box_expended") then
-		local size = gui.get_size(CARD_BOX)
+		local size = gui.get_size(self.card_box)
 		size.x = size.x + CARD_HORIZONTAL_OFFSET
+	end
+	if message_id == hash("character_data") then
+		
 	end
 end
 
 function on_input(self, action_id, action)
 	if action_id==hash("wheel_up") then
 		if action.value == 1 then
-			local pos = gui.get_position(CARD_BOX)
+			local pos = gui.get_position(self.card_box)
 			pos.x = pos.x + 100
-			gui.set_position(CARD_BOX, pos)
+			gui.set_position(self.card_box, pos)
 		end
 	elseif action_id==hash("wheel_down") then
 		if action.value == 1 then
-			local pos = gui.get_position(CARD_BOX)
+			local pos = gui.get_position(self.card_box)
 			pos.x = pos.x - 100
-			gui.set_position(CARD_BOX, pos)
+			gui.set_position(self.card_box, pos)
 		end
 	end
 
 	if action_id == hash("touch") and action.pressed then
-		if gui.pick_node(CHARACTER_LIST_CROSS, action.x, action.y) then
-			gui.set_enabled(WINDOW, false)
+		if gui.pick_node(self.card_list_cross, action.x, action.y) then
+			gui.set_enabled(self.window, false)
 			msg.post(".", "destory")
 			msg.post(ROOT_MENU, "destroy")
 		end
+	end
+	if action_id==hash("menu") and action.pressed  then
+		gui.set_enabled(self.window, false)
+		msg.post(".", "release_input_focus")
+		msg.post(".", "destory")
+		msg.post(ROOT_MENU, "destroy")
 	end
 end

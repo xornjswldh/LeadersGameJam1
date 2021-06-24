@@ -1,22 +1,17 @@
-local LINE
-local BOX
-local WINDOW
-local CARD_LIST_CROSS
-local ROOT_MENU
+local ROOT_MENU = "scene:/root_menu"
 local VERTICAL_OFFSET = 320
 local MIN_BOX_POS_Y = 275
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	LINE = gui.get_node("line")
-	BOX = gui.get_node("box")
-	WINDOW = gui.get_node("window")
-	CARD_LIST_CROSS = gui.get_node("cross")
-	ROOT_MENU = "scene:/root_menu"
+	self.line_node = gui.get_node("line")
+	self.box  = gui.get_node("box")
+	self.window = gui.get_node("window")
+	self.card_list_cross = gui.get_node("cross")
 	self.line = 4
 
 	for i = 1, self.line do
-		local line = gui.clone_tree(LINE)[hash("line")]
+		local line = gui.clone_tree(self.line_node )[hash("line")]
 		local pos = gui.get_position(line)
 		pos.y = pos.y - VERTICAL_OFFSET * i
 		gui.set_position(line, pos)
@@ -25,20 +20,20 @@ function init(self)
 end
 
 function update(self, dt)
-	local pos = gui.get_position(BOX)
+	local pos = gui.get_position(self.box )
 	if pos.y < MIN_BOX_POS_Y then
 		pos.y = MIN_BOX_POS_Y
 		gui.set_position(BOX, pos)
 	end
 	if pos.y > self.line * VERTICAL_OFFSET + 100 then
 		pos.y = self.line * VERTICAL_OFFSET + 100
-		gui.set_position(BOX, pos)
+		gui.set_position(self.box , pos)
 	end
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("box_expended") then
-		local size = gui.get_size(BOX)
+		local size = gui.get_size(self.box )
 		size.y = size.y + VERTICAL_OFFSET
 	end
 end
@@ -59,10 +54,17 @@ function on_input(self, action_id, action)
 	end
 
 	if action_id == hash("touch") and action.pressed then
-		if gui.pick_node(CARD_LIST_CROSS, action.x, action.y) then
-			gui.set_enabled(WINDOW, false)
+		if gui.pick_node(self.card_list_cross, action.x, action.y) then
+			gui.set_enabled(self.window , false)
 			msg.post(".", "destory")
 			msg.post(ROOT_MENU, "destroy")
 		end
+	end
+	if action_id==hash("menu") and action.pressed then
+		gui.set_enabled(self.window , false)
+		msg.post(".", "release_input_focus")
+		msg.post(".", "destory")
+		
+		msg.post(ROOT_MENU, "destroy")
 	end
 end

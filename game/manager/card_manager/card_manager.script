@@ -1,28 +1,32 @@
 local HAND = "/hand"
 local MAX_HAND = 4
+local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
+local NEUTRAL = {
+	{character="중립",title="총기 난사",effect="무작위 적 셋에게 피해를 8 줍니다.",cost=1},
+	
+}
 function init(self)
 	math.randomseed(os.time())
-	self.deck = {{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2},{title="aaa",effect="ddd",cost=2}}
+	self.deck = {}
 	self.hand_count=0
-	CHARACTER = {"army", "scientist", "shaman", "gambler", "neutral"}
-	msg.post(".", "turn_end")
 end
 
 function on_message(self, message_id, message, sender)
-	if messge_id == hash("generate_deck") then
-		for j,character in pair(CHARACTER) do
-			if message[character] then
-				for i=1,#message[character].cards do
-					table.insert(self.deck, message[character].cards[i])
-				end
+	if message_id == hash("generate_deck") then
+		self.deck = message.cards
+		if #NEUTRAL>0 then
+			for i=1,#NEUTRAL do
+				table.insert(self.deck, NEUTRAL[i])
 			end
 		end
+		msg.post(HAND, "draw", {card = refill_card(self)})
 	end
 	if message_id == hash("turn_end") then
 		msg.post(HAND, "draw", {card = refill_card(self)})
 	end
 	if message_id == hash("use") then
 		self.hand_count=self.hand_count-1
+		table.insert(self.deck, message)
 	end
 end
 

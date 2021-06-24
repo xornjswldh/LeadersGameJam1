@@ -17,7 +17,7 @@ embedded_components {
   id: "card_list"
   type: "factory"
   data: "prototype: \"/game/ui/card List/card_list.go\"\n"
-  "load_dynamically: false\n"
+  "load_dynamically: true\n"
   ""
   position {
     x: 0.0
@@ -35,7 +35,7 @@ embedded_components {
   id: "character_list"
   type: "factory"
   data: "prototype: \"/game/ui/character list/character_list.go\"\n"
-  "load_dynamically: false\n"
+  "load_dynamically: true\n"
   ""
   position {
     x: 0.0
@@ -53,7 +53,7 @@ embedded_components {
   id: "exit_menu"
   type: "factory"
   data: "prototype: \"/game/ui/exit_menu/exit_menu.go\"\n"
-  "load_dynamically: false\n"
+  "load_dynamically: true\n"
   ""
   position {
     x: 0.0

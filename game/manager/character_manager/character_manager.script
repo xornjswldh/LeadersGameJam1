@@ -1,8 +1,57 @@
+local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
+local CM ="ingame:/card_manager"
+local CHARACTER={
+	["군인"]={hp=70,avoid=0.1,
+	cards={
+		{character="군인",title="총기 난사",effect="무작위 적 셋에게 피해를 8 줍니다.",cost=1},
+		{character="군인",title="위기는 곧",effect="체력이 가장 많은 적에게 잃은 체력만큼 피해를 줍니다.",cost=4},
+		{character="군인",title="지원 사격",effect="모든 적에게 피해를 10 줍니다.",cost=2},
+		{character="군인",title="도발",effect="자신에게 방어도를 15 줍니다. 몬스터들이 이 캐릭터를 우선적으로 공격합니다.",cost=1}}},
+		["과학자"]={hp=40,avoid=0.07,
+		cards={
+			{character="과학자",title="치유 물약",effect="모든 아군 캐릭터의 체력을 10 회복합니다.",cost=1},
+			{character="과학자",title="독 장판",effect="내 턴이 끝날 때, 모든 적에게 피해를 4 줍니다.",cost=0},
+			{character="과학자",title="화학 반응",effect="모든 적에게 15의 피해를 입힙니다.",cost=3},
+			{character="과학자",title="재생 물약",effect="아군 캐릭터의 생명력을 5 회복시킵니다. 이 카드를 내 덱에 다시 섞어 넣습니다.",cost=0}}},
+			["경찰"]={hp=60,avoid=0.09,
+			cards={
+				{character="경찰",title="너 죽고 나 죽자",effect="적 캐릭터와  자신에게 피해를 10 줍니다.",cost=1},
+				{character="경찰",title="과감한 판단",effect="내 손에 있는 카드를 전부 버립니다. 버린 카드 한 장 당 무작위 적에게 피해를 8 줍니다.",cost=4},
+				{character="경찰",title="응급처치",effect="죽은 동료를 무작위로 부활시킵니다.",cost=5}}},
+				["도박사"]={hp=60,avoid=0.50,effect="피해 입을시 대미지 1.5배",
+				cards={
+					{character="도박사",title="오늘의 운세",effect="이 카드를 내 덱에 섞어 넣습니다. 다음 턴에 이 카드를 뽑으면 모든 적에게 피해를 10 주고 파괴됩니다.",cost=2},
+					{character="도박사",title="목숨을 건 내기",effect="체력이 5가 됩니다. 다음 내턴의 시작 전에 이 캐릭터가 죽으면, 절반의 체력으로 부활합니다.",cost=4},
+					{character="도박사",title="재활용",effect="이번 스테이지에서 낸 무작위 카드를 사용합니다.",cost=2}}}
+				}
+function init(self)
+	self.character={}
+	self.party={}
+	self.character["군인"] = CHARACTER["군인"]
+	self.party["군인"]=self.character["군인"]
+end
+
 function on_message(self, message_id, message, sender)
+	if message_id==hash("reset") then
+		self.character={}
+		self.party={}
+		self.character["군인"] = CHARACTER["군인"]
+		self.party["군인"]=self.character["군인"]
+	end
 	if message_id == hash("update_character") then
-		self.character = message --message={[캐릭터이름]={hp=50,effect="",cards={}...}
+		self.character[message.name] = CHARACTER[message.name]
 	end
 	if message_id == hash("turn_begin") then
-		msg.post(CARD_MANAGER), "generate_deck", self.character)
+		local cards = {}
+	
+		for i=1,#CHARACTER_NAME do
+			local name = CHARACTER_NAME[i]
+			if self.party[name] then
+				for j=1,#self.party[name].cards do
+					table.insert(cards,self.party[name].cards[j])
+				end
+			end
+		end
+		msg.post(CM, "generate_deck",{cards=cards})
 	end
 end
