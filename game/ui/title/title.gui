@@ -411,7 +411,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  template: "/game/ui/title/option/option.gui"
+  template: "/game/ui/option/option.gui"
   template_node_child: false
 }
 nodes {

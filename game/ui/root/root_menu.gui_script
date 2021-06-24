@@ -1,37 +1,83 @@
+local OPTION_BTN
+local CHARACTER_LIST_BTN
+local CARD_LIST_BTN
+local OPTION
+local OPTION_CROSS
+local CHARACTER_LIST
+local CARD_LIST
+
+local TOUCHCOLL ="/touch#collisionobject"
+local RED = vmath.vector4(1,0,0,1)
+local WHITE = vmath.vector4(1,1,1,1)
+local BLUE = vmath.vector4(0,0,1,1)
+local WHITEBLUE = vmath.vector4(0.5,0.5,1,1)
+
 function init(self)
-	-- Add initialization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
-
-function final(self)
-	-- Add finalization code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
-end
-
-function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	msg.post(".", "acquire_input_focus")
+	OPTION_BTN = gui.get_node("option_btn")
+	CHARACTER_LIST_BTN =gui.get_node("character_list_btn")
+	CARD_LIST_BTN = gui.get_node("card_list_btn")
+	OPTION=gui.get_node("option/window")
+	OPTION_CROSS=gui.get_node("option/cross")
+	gui.set_enabled(OPTION, false)
+	
 end
 
 function on_message(self, message_id, message, sender)
-	-- Add message-handling code here
-	-- Learn more: https://defold.com/manuals/message-passing/
-	-- Remove this function if not needed
+	if message_id==hash("destroy") then
+		msg.post(".", "acquire_input_focus")
+	end
 end
 
 function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
+	if not action_id then
+		if gui.pick_node(CHARACTER_LIST_BTN, action.x, action.y) then
+			gui.set_color(CHARACTER_LIST_BTN, WHITEBLUE)
+		else
+			gui.set_color(CHARACTER_LIST_BTN, WHITE)
+		end
+		
+		if gui.pick_node(OPTION_BTN, action.x, action.y) then
+			gui.set_color(OPTION_BTN, WHITEBLUE)
+		else
+			gui.set_color(OPTION_BTN, WHITE)
+		end
+		if gui.pick_node(OPTION_CROSS, action.x, action.y) then
+			gui.set_color(OPTION_CROSS, WHITEBLUE)
+		else
+			gui.set_color(OPTION_CROSS, WHITE)
+		end
+		if gui.pick_node(CARD_LIST_BTN, action.x, action.y) then
+			gui.set_color(CARD_LIST_BTN, WHITEBLUE)
+		else
+			gui.set_color(CARD_LIST_BTN, WHITE)
+		end
+	end
+
+	if action_id == hash("touch") and action.pressed then
+		if gui.pick_node(OPTION_BTN, action.x, action.y) then
+			gui.set_enabled(OPTION, true)
+			msg.post(TOUCHCOLL, "disable")
+		end
+		if gui.pick_node(CARD_LIST_BTN, action.x, action.y) then
+			gui.set_enabled(OPTION, false)
+			msg.post(".", "release_input_focus")
+			factory.create("#card_list")
+			msg.post(TOUCHCOLL, "disable")
+		end
+		
+		if gui.pick_node(CHARACTER_LIST_BTN, action.x, action.y) then
+			gui.set_enabled(OPTION, false)
+			msg.post(".", "release_input_focus")
+			factory.create("#character_list")
+			msg.post(TOUCHCOLL, "disable")
+		end
+		
+		if gui.pick_node(OPTION_CROSS, action.x, action.y) then
+			gui.set_enabled(OPTION, false)
+			msg.post(TOUCHCOLL, "enable")
+		end
+	end
 end
 
 function on_reload(self)
