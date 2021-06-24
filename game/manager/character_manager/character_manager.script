@@ -25,18 +25,18 @@ local CHARACTER={
 					{character="도박사",title="재활용",effect="이번 스테이지에서 낸 무작위 카드를 사용합니다.",cost=2}}}
 				}
 function init(self)
-	self.character={}
 	self.party={}
-	self.character["군인"] = CHARACTER["군인"]
-	self.party["군인"]=self.character["군인"]
+	self.party["군인"] = CHARACTER["군인"]
+	self.party["경찰"] = CHARACTER["경찰"]
 end
 
 function on_message(self, message_id, message, sender)
 	if message_id==hash("reset") then
-		self.character={}
 		self.party={}
-		self.character["군인"] = CHARACTER["군인"]
-		self.party["군인"]=self.character["군인"]
+		self.party["군인"] = CHARACTER["군인"]
+	end
+	if message_id == hash("request_character") then
+		msg.post(sender, "response_character",{party=self.party})
 	end
 	if message_id == hash("request_card") then
 		local cards = {}
