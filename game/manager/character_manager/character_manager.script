@@ -4,7 +4,7 @@ local CHARACTER={
 	["군인"]={hp=70,avoid=0.1,
 	cards={
 		{character="군인",title="총기 난사",effect="무작위 적 셋에게 피해를 8 줍니다.",cost=1},
-		{character="군인",title="위기는 곧",effect="체력이 가장 많은 적에게 잃은 체력만큼 피해를 줍니다.",cost=4},
+		{character="군인",title="위기는 곧 기회",effect="체력이 가장 많은 적에게 잃은 체력만큼 피해를 줍니다.",cost=4},
 		{character="군인",title="지원 사격",effect="모든 적에게 피해를 10 줍니다.",cost=2},
 		{character="군인",title="도발",effect="자신에게 방어도를 15 줍니다. 몬스터들이 이 캐릭터를 우선적으로 공격합니다.",cost=1}}},
 		["과학자"]={hp=40,avoid=0.07,
@@ -17,7 +17,7 @@ local CHARACTER={
 			cards={
 				{character="경찰",title="너 죽고 나 죽자",effect="적 캐릭터와  자신에게 피해를 10 줍니다.",cost=1},
 				{character="경찰",title="과감한 판단",effect="내 손에 있는 카드를 전부 버립니다. 버린 카드 한 장 당 무작위 적에게 피해를 8 줍니다.",cost=4},
-				{character="경찰",title="응급처치",effect="죽은 동료를 무작위로 부활시킵니다.",cost=5}}},
+				{character="경찰",title="심폐소생술",effect="죽은 동료를 무작위로 부활시킵니다.",cost=5}}},
 				["도박사"]={hp=60,avoid=0.50,effect="피해 입을시 대미지 1.5배",
 				cards={
 					{character="도박사",title="오늘의 운세",effect="이 카드를 내 덱에 섞어 넣습니다. 다음 턴에 이 카드를 뽑으면 모든 적에게 피해를 10 주고 파괴됩니다.",cost=2},
