@@ -1,0 +1,65 @@
+local CARD
+local CARD_BOX
+local WINDOW
+local CHARACTER_LIST_CROSS
+local CARD_HORIZONTAL_OFFSET = 220
+local MIN_CARD_BOX_POS_X = -600
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	CARD = gui.get_node("card/outter_frame")
+	CARD_BOX = gui.get_node("card_box")
+	WINDOW = gui.get_node("window")
+	CHARACTER_LIST_CROSS = gui.get_node("cross")
+	self.card_num = 10
+
+	for i = 1, self.card_num do
+		local card = gui.clone_tree(CARD)[hash("card/outter_frame")]
+		local pos = gui.get_position(card)
+		pos.x = pos.x + CARD_HORIZONTAL_OFFSET * i
+		gui.set_position(card, pos)
+		msg.post(".", "card_box_expended")
+	end
+	print(gui.get_position(CARD_BOX))
+end
+
+function update(self, dt)
+	local pos = gui.get_position(CARD_BOX)
+	if pos.x > MIN_CARD_BOX_POS_X then
+		pos.x = MIN_CARD_BOX_POS_X
+		gui.set_position(CARD_BOX, pos)
+	end
+	if pos.x < -(self.card_num * CARD_HORIZONTAL_OFFSET) + 360 then
+		pos.x = -(self.card_num * CARD_HORIZONTAL_OFFSET) + 360
+		gui.set_position(CARD_BOX, pos)
+	end
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("card_box_expended") then
+		local size = gui.get_size(CARD_BOX)
+		size.x = size.x + CARD_HORIZONTAL_OFFSET
+	end
+end
+
+function on_input(self, action_id, action)
+	if action_id==hash("wheel_up") then
+		if action.value == 1 then
+			local pos = gui.get_position(CARD_BOX)
+			pos.x = pos.x + 100
+			gui.set_position(CARD_BOX, pos)
+		end
+	elseif action_id==hash("wheel_down") then
+		if action.value == 1 then
+			local pos = gui.get_position(CARD_BOX)
+			pos.x = pos.x - 100
+			gui.set_position(CARD_BOX, pos)
+		end
+	end
+
+	if action_id == hash("touch") and action.pressed then
+		if gui.pick_node(CHARACTER_LIST_CROSS, action.x, action.y) then
+			gui.set_enabled(WINDOW, false)
+		end
+	end
+end

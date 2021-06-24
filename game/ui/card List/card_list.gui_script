@@ -3,15 +3,15 @@ local BOX
 local WINDOW
 local CARD_LIST_CROSS
 local VERTICAL_OFFSET = 320
-local MIN_BOX_HEIGHT = 275
+local MIN_BOX_POS_Y = 275
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
-	self.line = 4
 	LINE = gui.get_node("line")
 	BOX = gui.get_node("box")
 	WINDOW = gui.get_node("window")
-	CARD_LIST_CROSS=gui.get_node("cross")
+	CARD_LIST_CROSS = gui.get_node("cross")
+	self.line = 4
 
 	for i = 1, self.line do
 		local line = gui.clone_tree(LINE)[hash("line")]
@@ -24,12 +24,12 @@ end
 
 function update(self, dt)
 	local pos = gui.get_position(BOX)
-	if pos.y < MIN_BOX_HEIGHT then
-		pos.y = MIN_BOX_HEIGHT
+	if pos.y < MIN_BOX_POS_Y then
+		pos.y = MIN_BOX_POS_Y
 		gui.set_position(BOX, pos)
 	end
-	if pos.y > self.line * 330 then
-		pos.y = self.line * 330 + 50
+	if pos.y > self.line * VERTICAL_OFFSET + 100 then
+		pos.y = self.line * VERTICAL_OFFSET + 100
 		gui.set_position(BOX, pos)
 	end
 end
