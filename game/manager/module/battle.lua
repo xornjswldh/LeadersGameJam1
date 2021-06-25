@@ -117,28 +117,28 @@ end
 
 
 function B.animate_card_effect(self,title)
-	if title == TITLE[1] then
-	elseif title == TITLE[2] then
-	elseif title == TITLE[3] then
-	elseif title == TITLE[4] then
-	elseif title == TITLE[5] then
-	elseif title == TITLE[6] then
-	elseif title == TITLE[7] then
-	elseif title == TITLE[8] then
-	elseif title == TITLE[9] then
-	elseif title == TITLE[10] then
-	elseif title == TITLE[11] then
-	elseif title == TITLE[12] then
-	elseif title == TITLE[13] then
-	elseif title == TITLE[14] then
-	elseif title == TITLE[15] then
-	elseif title == TITLE[16] then
-	elseif title == TITLE[17] then
-	elseif title == TITLE[18] then
-	elseif title == TITLE[19] then
-	elseif title == TITLE[20] then
-	elseif title == TITLE[21] then
-	elseif title == TITLE[22] then
+	if title == TITLE[1] then --신속한 타격
+	elseif title == TITLE[2] then --응급 처치
+	elseif title == TITLE[3] then --선제 공격
+	elseif title == TITLE[4] then --정밀 타격
+	elseif title == TITLE[5] then --공습 경보
+	elseif title == TITLE[6] then --방어 태세
+	elseif title == TITLE[7] then --시한 폭탄
+	elseif title == TITLE[8] then --기사 회생
+	elseif title == TITLE[9] then --총기 난사
+	elseif title == TITLE[10] then --위기는 곧 기회
+	elseif title == TITLE[11] then --지원 사격
+	elseif title == TITLE[12] then --도발
+	elseif title == TITLE[13] then --치유 물약
+	elseif title == TITLE[14] then --독 장판
+	elseif title == TITLE[15] then --화학 반응
+	elseif title == TITLE[16] then --재생 물약
+	elseif title == TITLE[17] then --너 죽고 나 죽자
+	elseif title == TITLE[18] then --과감한 판단
+	elseif title == TITLE[19] then --심폐소생술
+	elseif title == TITLE[20] then --오늘의 운세
+	elseif title == TITLE[21] then --목숨을 건 내기
+	elseif title == TITLE[22] then --재활용
 	end
 	apply_card_effect(self,title)
 end
