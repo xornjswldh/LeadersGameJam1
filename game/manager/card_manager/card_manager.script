@@ -2,14 +2,14 @@ local HAND = "/hand"
 local MAX_HAND = 4
 local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
 local NEUTRAL = {
-	{character="중립",title="신속한 타격",effect="무작위 적에게 피해를 5 줍니다. 카드를 한장 뽑습니다.",cost=0},
-	{character="중립",title="응급 처치",effect="체력이 가장 낮은 아군 캐릭터의 체력을 10 회복시킵니다.",cost=0},
-	{character="중립",title="선제 공격",effect="피해를 입지 않은 적에게 피해를 8 줍니다. 카드를 뽑습니다.",cost=0},
-	{character="중립",title="정밀 타격",effect="무작위 적에게 피해를 15 줍니다. 이 공격으로 대상이 죽으면, 이 카드를 내 덱에 섞어 넣습니다.",cost=1},
-	{character="중립",title="공습 경보",effect="아군 포함 모든 캐릭터에게 피해를 10 줍니다.",cost=1},
-	{character="중립",title="방어 태세",effect="모든 아군 캐릭터가 방어도를 5 얻습니다. 카드를 한 장 뽑습니다.",cost=2},
-	{character="중립",title="시한 폭탄",effect="3턴 뒤 모든 적에게 피해를 25 줍니다.",cost=2},
-	{character="중립",title="기사 회생",effect="체력이 가장 낮은 아군 캐릭터의 생명력을 30 회복시킵니다.",cost=5}
+	{character="중립",img = "quick_attack",title="신속한 타격",effect="무작위 적에게 피해를 5 줍니다. 카드를 한장 뽑습니다.",cost=0},
+	{character="중립",img = "first_aid_kit",title="응급 처치",effect="체력이 가장 낮은 아군 캐릭터의 체력을 10 회복시킵니다.",cost=0},
+	{character="중립",img = "first_attack",title="선제 공격",effect="피해를 입지 않은 적에게 피해를 8 줍니다. 카드를 뽑습니다.",cost=0},
+	{character="중립",img = "precise_hit",title="정밀 타격",effect="무작위 적에게 피해를 15 줍니다. 이 공격으로 대상이 죽으면, 이 카드를 내 덱에 섞어 넣습니다.",cost=1},
+	{character="중립",img = "air_drop",title="공습 경보",effect="아군 포함 모든 캐릭터에게 피해를 10 줍니다.",cost=1},
+	{character="중립",img = "guard_stance",title="방어 태세",effect="모든 아군 캐릭터가 방어도를 5 얻습니다. 카드를 한 장 뽑습니다.",cost=2},
+	{character="중립",img = "timed_bomb",title="시한 폭탄",effect="3턴 뒤 모든 적에게 피해를 25 줍니다.",cost=2},
+	{character="중립",img = "nearly_dead",title="기사 회생",effect="체력이 가장 낮은 아군 캐릭터의 생명력을 30 회복시킵니다.",cost=5}
 }
 function init(self)
 	math.randomseed(os.time())
