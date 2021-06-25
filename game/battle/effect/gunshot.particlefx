@@ -21,7 +21,7 @@ emitters {
   particle_orientation: PARTICLE_ORIENTATION_DEFAULT
   inherit_velocity: 0.0
   max_particle_count: 1
-  type: EMITTER_TYPE_2DCONE
+  type: EMITTER_TYPE_CIRCLE
   start_delay: 0.0
   properties {
     key: EMITTER_KEY_SPAWN_RATE
@@ -47,7 +47,7 @@ emitters {
     key: EMITTER_KEY_SIZE_Y
     points {
       x: 0.0
-      y: 70.0
+      y: 0.0
       t_x: 1.0
       t_y: 0.0
     }
