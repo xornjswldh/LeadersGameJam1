@@ -5,6 +5,27 @@ local ROOT_MENU = "scene:/root_menu"
 local CHARACTER_MANGER = "main:/character_manager"
 local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
 local CHARACTER_ANIM ={["군인"]="12",["과학자"]="4",["도박사"]="2",["경찰"]="11"}
+local CHARACTER_CARD = {
+
+	["군인"]={
+		{character="군인",img = "retatata",title="총기 난사",effect="무작위 적 셋에게 피해를 8 줍니다.",cost=1},
+		{character="군인",img = "revenge",title="위기는 곧 기회",effect="체력이 가장 많은 적에게 잃은 체력만큼 피해를 줍니다.",cost=4},
+		{character="군인",img = "support_fire",title="지원 사격",effect="모든 적에게 피해를 10 줍니다.",cost=2},
+		{character="군인",img = "taunt",title="도발",effect="자신에게 방어도를 15 줍니다. 몬스터들이 이 캐릭터를 우선적으로 공격합니다.",cost=1}},
+		["과학자"]={
+			{character="과학자",img = "instant_heal_potion",title="치유 물약",effect="모든 아군 캐릭터의 체력을 10 회복합니다.",cost=1},
+			{character="과학자",img = "Poison_plask",title="독 장판",effect="내 턴이 끝날 때, 모든 적에게 피해를 4 줍니다.",cost=0},
+			{character="과학자",img = "chemical_reaction",title="화학 반응",effect="모든 적에게 15의 피해를 입힙니다.",cost=3},
+			{character="과학자",img = "regenerate_potion",title="재생 물약",effect="아군 캐릭터의 생명력을 5 회복시킵니다. 이 카드를 내 덱에 다시 섞어 넣습니다.",cost=0}},
+			["경찰"]={
+				{character="경찰",img = "you_die_i_die",title="너 죽고 나 죽자",effect="적 캐릭터와  자신에게 피해를 10 줍니다.",cost=1},
+				{character="경찰",img = "daring_decision",title="과감한 판단",effect="내 손에 있는 카드를 전부 버립니다. 버린 카드 한 장 당 무작위 적에게 피해를 8 줍니다.",cost=4},
+				{character="경찰",img = "CPR",title="심폐소생술",effect="죽은 동료를 무작위로 부활시킵니다.",cost=5}},
+				["도박사"]={
+					{character="도박사",img = "todays_luck",title="오늘의 운세",effect="이 카드를 내 덱에 섞어 넣습니다. 다음 턴에 이 카드를 뽑으면 모든 적에게 피해를 10 주고 파괴됩니다.",cost=2},
+					{character="도박사",img = "soul_is_chip",title="목숨을 건 내기",effect="체력이 5가 됩니다. 다음 내턴의 시작 전에 이 캐릭터가 죽으면, 절반의 체력으로 부활합니다.",cost=4},
+					{character="도박사",img = "recycle",title="재활용",effect="이번 스테이지에서 낸 무작위 카드를 사용합니다.",cost=2}}
+				}
 function init(self)
 	msg.post(".", "acquire_input_focus")
 	self.card = {}
@@ -38,7 +59,12 @@ function on_message(self, message_id, message, sender)
 		size.x = size.x + CARD_HORIZONTAL_OFFSET
 	end
 	if message_id == hash("response_card") then
-		self.card = message.cards
+		for i=1,#message.party do
+			local name = message.party[i]
+			for j=1,#CHARACTER_CARD[name]  do
+				table.insert(self.card,CHARACTER_CARD[name][j])
+			end
+		end
 		local sample = gui.get_node("card_sample/outter_frame")
 		for i = 1, #self.card do
 			local node = gui.clone_tree(sample)

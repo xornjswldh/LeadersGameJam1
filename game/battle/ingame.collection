@@ -125,7 +125,7 @@ embedded_instances {
   data: ""
   position {
     x: -100.0
-    y: -40.0
+    y: -50.0
     z: 0.0
   }
   rotation {
@@ -144,8 +144,8 @@ embedded_instances {
   id: "party2"
   data: ""
   position {
-    x: -226.0
-    y: -42.0
+    x: -250.0
+    y: -40.0
     z: 0.0
   }
   rotation {
@@ -165,7 +165,7 @@ embedded_instances {
   data: ""
   position {
     x: -400.0
-    y: -120.0
+    y: -50.0
     z: 0.0
   }
   rotation {
@@ -185,7 +185,7 @@ embedded_instances {
   data: ""
   position {
     x: 100.0
-    y: -40.0
+    y: -50.0
     z: 0.0
   }
   rotation {
@@ -204,8 +204,8 @@ embedded_instances {
   id: "enemy2"
   data: ""
   position {
-    x: 267.0
-    y: -56.0
+    x: 250.0
+    y: -40.0
     z: 0.0
   }
   rotation {
@@ -225,7 +225,7 @@ embedded_instances {
   data: ""
   position {
     x: 400.0
-    y: -120.0
+    y: -80.0
     z: 0.0
   }
   rotation {
