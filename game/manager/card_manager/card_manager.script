@@ -14,6 +14,7 @@ local NEUTRAL = {
 function init(self)
 	math.randomseed(os.time())
 	self.deck = {}
+	self.grabe ={}
 	self.hand_count=0
 end
 
@@ -32,7 +33,7 @@ function on_message(self, message_id, message, sender)
 	end
 	if message_id == hash("use") then
 		self.hand_count=self.hand_count-1
-		table.insert(self.deck, message)
+		table.insert(self.grabe, message)
 	end
 end
 

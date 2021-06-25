@@ -4,12 +4,20 @@ local DETAIL_VIEW=vmath.vector3(1.5,1.5,1)
 local GENERAL_VIEW=vmath.vector3(1,1,1)
 local EMPHASIZE_VIEW=vmath.vector3(1.2,1.2,1)
 local SUBMIT_VIEW=vmath.vector3(0.7,0.7,1)
+local RED = vmath.vector4(1,0,0,1)
+local WHITE = vmath.vector4(1,1,1,1)
+local BLUE = vmath.vector4(0,0,1,1)
+local WHITEBLUE = vmath.vector4(0.5,0.5,1,1)
 local SAMPLE
 local SUBMIT_AREA
+local PASS_ICON
+local PASS_TEXT
 local CHARACTER_MANAGER="main:/character_manager"
 function init(self)
 	SAMPLE = gui.get_node("card_sample/outter_frame")
 	SUBMIT_AREA = gui.get_node("submit_area")
+	PASS_ICON = gui.get_node("pass_icon")
+	PASS_TEXT =gui.get_node("pass_text")
 	msg.post(".", "acquire_input_focus")
 	self.card={}
 	self.hold_card=nil
@@ -44,7 +52,7 @@ function on_message(self, message_id, message, sender)
 			end
 			local pos = gui.get_node("pos"..tostring(#self.card+1).."_"..tostring(#self.card+1))
 			local node = gui.clone_tree(SAMPLE)
-			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,message.card[i].character,message.card[i].title, message.card[i].effect, message.card[i].cost)
+			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,message.card[i].character,message.card[i].img,message.card[i].title,message.card[i].effect, message.card[i].cost)
 			new_card:change_layer("layer1")
 			table.insert(self.card,new_card)
 			new_card:initialize()
@@ -55,7 +63,15 @@ end
 
 function on_input(self, action_id, action)
 	local action_pos=vmath.vector3(action.x,action.y,0)
+	
 	if not action_id then
+		if gui.pick_node(PASS_ICON, action.x, action.y) and not self.hold_card then
+			gui.set_color(PASS_ICON, WHITEBLUE)
+			gui.set_color(PASS_TEXT, WHITEBLUE)
+		else
+			gui.set_color(PASS_ICON, WHITE)
+			gui.set_color(PASS_TEXT, WHITE)
+		end
 		for i = 1, #self.card do
 			local input_card= self.card[i].node
 			if gui.pick_node(input_card, action.x, action.y) and not self.hold_card then
@@ -68,6 +84,11 @@ function on_input(self, action_id, action)
 		end
 	end
 	if action_id==hash("touch") then
+		if action.pressed and gui.pick_node(PASS_ICON, action.x, action.y) and not self.hold_card then
+			gui.set_color(PASS_ICON, WHITEBLUE)
+			gui.set_color(PASS_TEXT, WHITEBLUE)
+			print(2)
+		end
 		if self.hold_card then
 			self.hold_card:change_layer("layer2")
 			self.hold_card:change_position(action_pos)

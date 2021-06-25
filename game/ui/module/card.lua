@@ -7,8 +7,8 @@ local COLOR = {
 	["도박사"]={vmath.vector4(1,0,0,1),vmath.vector4(1,0.5,0.5,1),vmath.vector4(1,0.7,0.7,1)},
 	["중립"]={vmath.vector4(1,1,1,1),vmath.vector4(1,1,1,1),vmath.vector4(1,1,1,1)}
 }
-function C.create(node,card,pos,character,title,effect,cost,hold)
-	local new_card={root=node,node=card,pos=pos,character=character,title=title,effect=effect,cost=cost,hold=false,wiggling=false,shaking=false}
+function C.create(node,card,pos,character,img,title,effect,cost,hold)
+	local new_card={root=node,node=card,pos=pos,img=img,character=character,title=title,effect=effect,cost=cost,hold=false,wiggling=false,shaking=false}
 	function new_card:initialize()
 		gui.set_color(new_card.root[hash("card_sample/inner_frame")], COLOR[new_card.character][2])
 		gui.set_color(new_card.root[hash("card_sample/explain_area")], COLOR[new_card.character][3])
@@ -17,6 +17,8 @@ function C.create(node,card,pos,character,title,effect,cost,hold)
 		gui.set_text(new_card.root[hash("card_sample/explain")],new_card.effect)
 		gui.set_text(new_card.root[hash("card_sample/title")],new_card.title)
 		gui.set_text(new_card.root[hash("card_sample/cost")],new_card.cost)
+		gui.set_texture(new_card.root[hash("card_sample/illust")],"card_image")
+		gui.play_flipbook(new_card.root[hash("card_sample/illust")], new_card.img)
 	end
 	function new_card:change_position(pos)
 		gui.set_position(new_card.node, pos)

@@ -4,14 +4,14 @@ local CARD_HORIZONTAL_OFFSET = 220
 local MIN_BOX_POS_Y = 275
 local CHARACTER_MANGER = "main:/character_manager"
 local NEUTRAL = {
-	{character="중립",title="신속한 타격",effect="무작위 적에게 피해를 5 줍니다. 카드를 한장 뽑습니다.",cost=0},
-	{character="중립",title="응급 처치",effect="체력이 가장 낮은 아군 캐릭터의 체력을 10 회복시킵니다.",cost=0},
-	{character="중립",title="선제 공격",effect="피해를 입지 않은 적에게 피해를 8 줍니다. 카드를 뽑습니다.",cost=0},
-	{character="중립",title="정밀 타격",effect="무작위 적에게 피해를 15 줍니다. 이 공격으로 대상이 죽으면, 이 카드를 내 덱에 섞어 넣습니다.",cost=1},
-	{character="중립",title="공습 경보",effect="아군 포함 모든 캐릭터에게 피해를 10 줍니다.",cost=1},
-	{character="중립",title="방어 태세",effect="모든 아군 캐릭터가 방어도를 5 얻습니다. 카드를 한 장 뽑습니다.",cost=2},
-	{character="중립",title="시한 폭탄",effect="3턴 뒤 모든 적에게 피해를 25 줍니다.",cost=2},
-	{character="중립",title="기사 회생",effect="체력이 가장 낮은 아군 캐릭터의 생명력을 30 회복시킵니다.",cost=5}
+	{character="중립",img = "quick_attack",title="신속한 타격",effect="무작위 적에게 피해를 5 줍니다. 카드를 한장 뽑습니다.",cost=0},
+	{character="중립",img = "first_aid_kit",title="응급 처치",effect="체력이 가장 낮은 아군 캐릭터의 체력을 10 회복시킵니다.",cost=0},
+	{character="중립",img = "first_attack",title="선제 공격",effect="피해를 입지 않은 적에게 피해를 8 줍니다. 카드를 뽑습니다.",cost=0},
+	{character="중립",img = "precise_hit",title="정밀 타격",effect="무작위 적에게 피해를 15 줍니다. 이 공격으로 대상이 죽으면, 이 카드를 내 덱에 섞어 넣습니다.",cost=1},
+	{character="중립",img = "air_drop",title="공습 경보",effect="아군 포함 모든 캐릭터에게 피해를 10 줍니다.",cost=1},
+	{character="중립",img = "guard_stance",title="방어 태세",effect="모든 아군 캐릭터가 방어도를 5 얻습니다. 카드를 한 장 뽑습니다.",cost=2},
+	{character="중립",img = "timed_bomb",title="시한 폭탄",effect="3턴 뒤 모든 적에게 피해를 25 줍니다.",cost=2},
+	{character="중립",img = "nearly_dead",title="기사 회생",effect="체력이 가장 낮은 아군 캐릭터의 생명력을 30 회복시킵니다.",cost=5}
 }
 local card = require "game.ui.module.card"
 function init(self)
@@ -67,7 +67,7 @@ function on_message(self, message_id, message, sender)
 			end
 			local node = gui.clone_tree(sample)
 			gui.set_parent(node[hash("card_sample/outter_frame")], line)
-			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,self.card[i].character,self.card[i].title, self.card[i].effect, self.card[i].cost)
+			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,self.card[i].character,self.card[i].img,self.card[i].title, self.card[i].effect, self.card[i].cost)
 			local pos = vmath.vector3(-650,0,0)
 			if i%self.card_per_line == 0 then
 				pos.x = pos.x + CARD_HORIZONTAL_OFFSET * self.card_per_line

@@ -42,7 +42,7 @@ function on_message(self, message_id, message, sender)
 		local sample = gui.get_node("card_sample/outter_frame")
 		for i = 1, #self.card do
 			local node = gui.clone_tree(sample)
-			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,self.card[i].character,self.card[i].title, self.card[i].effect, self.card[i].cost)
+			local new_card = card.create(node,node[hash("card_sample/outter_frame")], pos,self.card[i].character,self.card[i].img,self.card[i].title, self.card[i].effect, self.card[i].cost)
 			local pos = vmath.vector3(-120,0,0)
 			pos.x = pos.x + CARD_HORIZONTAL_OFFSET * i
 			new_card:initialize()
