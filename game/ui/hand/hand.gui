@@ -53,7 +53,7 @@ nodes {
   layer: ""
   inherit_alpha: true
   alpha: 1.0
-  template: "/game/ui/card/card.gui"
+  template: "/game/ui/module/card.gui"
   template_node_child: false
 }
 nodes {

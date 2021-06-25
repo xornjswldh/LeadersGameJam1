@@ -7,9 +7,7 @@ local CHARACTER={
 }
 function init(self)
 	self.party={}
-	self.party["군인"] = CHARACTER["군인"]
-	self.party["경찰"] = CHARACTER["경찰"]
-	self.party["과학자"] = CHARACTER["과학자"]
+	self.party["도박사"] = CHARACTER["도박사"]
 end
 
 function on_message(self, message_id, message, sender)
@@ -46,7 +44,7 @@ function on_message(self, message_id, message, sender)
 		for i=1,#CHARACTER_NAME do
 			local name = CHARACTER_NAME[i]
 			if self.party[name] then
-				msg.post("ingame:/character_spawner", "spawn",{anim=i,num=num,hp=self.party[name].hp,avoid=self.party[name].avoid,effect=self.party[name].effect})
+				msg.post("ingame:/battle_manager", "spawn",{anim=i,num=num,hp=self.party[name].hp,avoid=self.party[name].avoid,effect=self.party[name].effect})
 				num=num+1
 			end
 		end

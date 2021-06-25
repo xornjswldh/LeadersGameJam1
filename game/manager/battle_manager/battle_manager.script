@@ -1,4 +1,6 @@
 local GM = "main:/game_manager"
+local CARD_MANAGER="ingame:/card_manager"
+local battle=require "game.manager.module.battle"
 local ENEMY = {
 	{hp=10,attack=2,many=1},
 	{hp=12,attack=3,many=2},
@@ -18,20 +20,91 @@ local ENEMY = {
 }
 function init(self)
 	math.randomseed(os.time())
+	self.character={}
+	self.enemy={}
+	self.dead_character={}
+	self.current_card={}
+	self.attack_count=0
 	msg.post(GM, "stage_request")
 	msg.post(".", "acquire_input_focus")
 end
 
+
 function on_message(self, message_id, message, sender)
+	battle.response_card_effect(self, message_id, message, sender)
+	if message_id==hash("hp_update") then
+		for i = 1, #self.character do
+			if self.character[i].unit==message.sender then
+				self.character[i].hp=message.hp
+				break
+			end
+		end
+	end
+	if message_id==hash("dead_check") then
+		if message.character then
+			for i = 1, #self.character do
+				if self.character[i].unit==message.sender then
+					if self.character[i].id ==1 then
+						for i = 1, #self.enemy do
+							msg.post(self.enemy[i], "release_target")
+						end
+					end
+					table.insert(self.dead_character,self.character)
+					table.remove(self.character,i)
+					break
+				end
+			end
+		else
+			for i = 1, #self.enemy do
+				if self.enemy[i].unit==message.sender then
+					table.remove(self.enemy,i)
+					break
+				end
+			end
+		end
+		msg.post(sender, "kill")
+	end
 	if message_id==hash("stage_response") then
 		local enemy = ENEMY[message.stage]
 		for i=1,enemy.many do
-			factory.create("#enemy",go.get_position("enemy"..tostring(i)),nil,{anim=math.random(17,24),hp=enemy.hp,attack=enemy.attack},4)
+			local unit = factory.create("#enemy",go.get_position("enemy"..tostring(i)),nil,{anim=math.random(17,24),hp=enemy.hp,attack=enemy.attack},4)
+			table.insert(self.enemy,{unit=unit,initial_hp=enemy.hp,hp=enemy.hp,attack=enemy.attack})
 		end
+	end
+	if message_id==hash("spawn") then
+		local character = factory.create("#character",go.get_position("/party"..tostring(message.num)),nil,{anim=message.anim,hp=message.hp,avoid=message.avoid},4)
+		table.insert(self.character, {unit=character,initial_hp=message.hp,hp=message.hp,avoid=message.avoid,effect=message.effect,id=message.anim})
 	end
 	if message_id==hash("destroy") then
 		msg.post(".", "acquire_input_focus")
 		msg.post("/hand", "acquire_input_focus")
+	end
+	if message_id==hash("turn_start") then
+		self.current_card={}
+		msg.post(CARD_MANAGER, "turn_start",self.character)
+		for i = 1, #self.character do
+			msg.post(self.character[i].unit, "turn_start")
+		end
+		for i = 1, #self.enemy do
+			msg.post(self.enemy[i].unit, "turn_start")
+		end
+	end
+	if message_id==hash("turn_end") then
+		for i = 1, #self.enemy do
+			msg.post(self.enemy[i].unit,"attack_character",{target=self.character[math.random(1,#self.character)].unit,delay=i})
+		end
+	end
+	if message_id==hash("use_card") then
+		table.insert(self.current_card,message)
+		battle.animate_card_effect(self,message.title)
+		msg.post(CARD_MANAGER, "discard",self.current_card[#self.current_card])
+	end
+	if message_id==hash("attack_response") then
+		self.attack_count=self.attack_count+1
+		if self.attack_count==#self.enemy then
+			msg.post(".", "turn_start")
+			self.attack_count=0
+		end
 	end
 end
 
@@ -41,7 +114,6 @@ function on_input(self, action_id, action)
 		msg.post("/hand", "release_input_focus")
 		local exit = factory.create("#exit_menu",nil,nil)
 		msg.post(exit, "creator",{creator=msg.url()})
-		
 	end
 end
 

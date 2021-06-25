@@ -1,4 +1,5 @@
 local HAND = "/hand"
+local BATTLE_MANAGER = "ingame:/battle_manager"
 local MAX_HAND = 4
 local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
 local NEUTRAL = {
@@ -41,11 +42,10 @@ end
 
 function on_message(self, message_id, message, sender)
 	if message_id == hash("generate_deck") then
-		local cards = {}
 		for i=1,#message.party do
 			local name = message.party[i]
 			for j=1,#CHARACTER_CARD[name]  do
-				table.insert(cards,CHARACTER_CARD[name][j])
+				table.insert(self.deck,CHARACTER_CARD[name][j])
 			end
 		end
 		if #NEUTRAL>0 then
@@ -55,27 +55,65 @@ function on_message(self, message_id, message, sender)
 		end
 		msg.post(HAND, "draw", {card = refill_card(self)})
 	end
-	if message_id == hash("turn_end") then
-		msg.post(HAND, "draw", {card = refill_card(self)})
+	if message_id==hash("draw") then
+		local card =draw(self)
+		msg.post(HAND, "draw", {card={card}})
 	end
-	if message_id == hash("use") then
+	if message_id == hash("turn_start") then
+		local character = message
+		local card =refill_card(self,character)
+		msg.post(HAND, "draw", {card =card })
+		msg.post(BATTLE_MANAGER,"draw",{card=card})
+	end
+	if message_id==hash("use_card") then
 		self.hand_count=self.hand_count-1
-		table.insert(self.grave, message)
+	end
+	if message_id == hash("discard") then
+		local pass = true
+		if #self.grave>0 then
+			local title = message.title
+			for i=1,#self.grave do
+				if self.grave[i].title == title then
+					pass=false
+					break
+				end
+			end
+		end
+		if pass then
+			table.insert(self.grave, message)
+		end
+	end
+	if message_id == hash("return_to_deck") then
+		table.insert(self.deck, message)
+	end
+	if message_id==hash("use_from_grave") then
+		local num = math.random(1, #self.grave)
+		msg.post(BATTLE_MANAGER, "use_card",self.grave[num])
 	end
 end
 
-function draw(self)
+function draw(self,character)
+	character=character or nil
 	local num = math.random(1, #self.deck)
 	local card = self.deck[num]
+	if character then
+		for i=1,#character do
+			if card.character ~= CHARACTER_NAME[character[i].id] then
+				num = math.random(1, #self.deck)
+				card = self.deck[num]
+			end
+		end
+	end
 	table.remove(self.deck, num)
 	self.hand_count=self.hand_count+1
 	return card
 end
 
-function refill_card(self)
+function refill_card(self,character)	
 	local cards = {}
+	character=character or nil
 	while self.hand_count<MAX_HAND do
-		table.insert(cards, draw(self))
+		table.insert(cards, draw(self,character))
 	end
 	return cards
 end

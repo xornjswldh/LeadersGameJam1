@@ -13,6 +13,7 @@ local SUBMIT_AREA
 local PASS_ICON
 local PASS_TEXT
 local CHARACTER_MANAGER="main:/character_manager"
+local BATTLE_MANGER="ingame:/battle_manager"
 function init(self)
 	SAMPLE = gui.get_node("card_sample/outter_frame")
 	SUBMIT_AREA = gui.get_node("submit_area")
@@ -45,6 +46,13 @@ function card_removed(self)
 end
 
 function on_message(self, message_id, message, sender)
+	if message_id==hash("discard_all") then
+		msg.post(sender, "attack_damage",{damage=8,time=#self.card})
+		for i=1,#self.card do
+			self.card[i]:discard()
+		end
+		self.card={}
+	end
 	if message_id==hash("draw") then
 		for i=1,#message.card do
 			if #self.card>0 then
@@ -87,7 +95,7 @@ function on_input(self, action_id, action)
 		if action.pressed and gui.pick_node(PASS_ICON, action.x, action.y) and not self.hold_card then
 			gui.set_color(PASS_ICON, WHITEBLUE)
 			gui.set_color(PASS_TEXT, WHITEBLUE)
-			print(2)
+			msg.post(BATTLE_MANGER, "turn_end")
 		end
 		if self.hold_card then
 			self.hold_card:change_layer("layer2")
@@ -121,7 +129,6 @@ function on_input(self, action_id, action)
 			local input_card= self.card[i]
 			if gui.pick_node(input_card.node, action.x, action.y) then
 				if action.pressed then
-					print(#self.card)
 					self.hold_card = input_card
 					self.hold_card.pos = gui.get_node("pos"..tostring(#self.card).."_"..tostring(#self.card))
 					table.remove(self.card,i)

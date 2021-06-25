@@ -1,10 +1,16 @@
 go.property("anim", 17)
 go.property("hp", 100)
 go.property("attack", 10)
+
+local BATTLE_MANAGER = "ingame:/battle_manager"
 function init(self)
 	msg.post("#sprite", "play_animation",{id=hash(tostring(self.anim))})
+	msg.post("#dead", "play_animation",{id=hash(tostring(self.anim))})
 	self.max_hp=self.hp
-	msg.post(".", "hp_update")
+	self.effect={}
+	self.target=nil
+	msg.post(".", "attack",{damage=0})
+	msg.post("#dead", "disable")
 end
 
 function final(self)
@@ -20,12 +26,78 @@ function update(self, dt)
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id==hash("hp_update") then
+	if message_id==hash("turn_start") then
+		for i=1,#self.effect do
+			if self.effect[i].wait then
+				self.effect[i].wait=self.effect[i].wait-1
+				if self.effect[i].wait==0 then
+					msg.post(".", "attack",{damage=self.effect[i].damage})
+				end
+			end
+			if self.effect[i].infinite then
+				print(555)
+				msg.post(".", "attack",{damage=self.effect[i].damage})
+			end
+		end
+	end
+	if message_id==hash("attack_character") then
+		timer.delay(message.delay/2, false, function()
+			print("attack")
+			if self.target then
+				msg.post(self.target,"attack",{damage=self.attack})
+			else
+				msg.post(message.target,"attack",{damage=self.attack})
+			end
+			msg.post(sender,"attack_response")
+		end)
+	end
+	if message_id==hash("dead") then
+		msg.post("#sprite", "disable")
+		msg.post("#dead", "enable")
+		msg.post(BATTLE_MANAGER, "dead_check",{character=false,sender=go.get_id()})
+	end
+	if message_id==hash("kill") then
+		msg.post(BATTLE_MANAGER, "dead")
+		go.animate("#dead", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 1)
+		timer.delay(1, false, function()
+			go.delete()
+		end)
+	end
+	if message_id==hash("attack") then
 		if message.damage then
 			self.hp=self.hp-message.damage
 		end
+		if self.hp<=0 then
+			self.hp=0
+			msg.post(".", "dead")
+		end
 		label.set_text("#hp_rate", tostring(self.hp).."/"..tostring(self.max_hp))
 		go.set("#hp", "scale.x", self.hp/self.max_hp)
+	end
+	if message_id==hash("heal") then
+		if message.hp  then
+			self.hp=self.hp+message.hp
+		end
+		if self.hp >self.max_hp then
+			self.hp=self.max_hp
+		end
+		label.set_text("#hp_rate", tostring(self.hp).."/"..tostring(self.max_hp))
+		go.set("#hp", "scale.x", self.hp/self.max_hp)
+	end
+	if message_id==hash("apply_effect") then
+		if message.type==1 then
+			table.insert(self.effect ,{wait=3,damage=25})
+		end
+		if message.type==2 then
+			self.target=message.target
+		end
+		if message.type==3 then
+		
+			table.insert(self.effect ,{infinite=true,damage=4})
+		end
+	end
+	if message_id==hash("release_target") then
+		self.target=nil
 	end
 end
 

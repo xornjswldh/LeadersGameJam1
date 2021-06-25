@@ -1,5 +1,6 @@
 local C ={}
-local CARD_MANAGER ="ingame:/card_manager"
+local BATTLE_MANGAGER ="ingame:/battle_manager"
+local CARD_MANGAGER ="ingame:/card_manager"
 local COLOR = {
 	["군인"]={vmath.vector4(0,0.3,0,1),vmath.vector4(0.2,0.5,0.2,1),vmath.vector4(0.7,1,0.7,1)},
 	["과학자"]={vmath.vector4(1,1,0,1),vmath.vector4(1,1,0.5,1),vmath.vector4(1,1,0.7,1)},
@@ -19,6 +20,13 @@ function C.create(node,card,pos,character,img,title,effect,cost,hold)
 		gui.set_text(new_card.root[hash("card_sample/cost")],new_card.cost)
 		gui.set_texture(new_card.root[hash("card_sample/illust")],"card_image")
 		gui.play_flipbook(new_card.root[hash("card_sample/illust")], new_card.img)
+	end
+	function new_card:discard(pos)
+		new_card:change_position(vmath.vector3(-1000,-1000,0))
+		msg.post(CARD_MANGAGER, "use_card")
+		timer.delay(0.1, false, function()
+			gui.delete_node(new_card.node)
+		end)
 	end
 	function new_card:change_position(pos)
 		gui.set_position(new_card.node, pos)
@@ -65,7 +73,8 @@ function C.create(node,card,pos,character,img,title,effect,cost,hold)
 		gui.animate(new_card.node, "rotation",  gui.get_rotation(new_card.pos), go.EASING_LINEAR, 0.1)
 	end
 	function new_card:use()
-		msg.post(CARD_MANAGER, "use_card",{character=new_card.character,title=new_card.title,effect=new_card.effect,cost=new_card.cost})
+		msg.post(BATTLE_MANGAGER, "use_card",{character=new_card.character,img=new_card.img,title=new_card.title,effect=new_card.effect,cost=new_card.cost})
+		msg.post(CARD_MANGAGER, "use_card")
 		new_card:change_position(vmath.vector3(-1000,-1000,0))
 		timer.delay(0.1, false, function()
 			gui.delete_node(new_card.node)
