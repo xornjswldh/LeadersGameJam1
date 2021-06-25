@@ -22,6 +22,22 @@ images {
   image: "/resource/effect/scratch_01.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
+images {
+  image: "/resource/effect/red_bolt.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/resource/effect/green_cross.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/resource/effect/shield.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/resource/effect/slash_03.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
 animations {
   id: "circle"
   images {
@@ -45,7 +61,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 5
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -64,7 +80,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 3
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -79,7 +95,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 2
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -110,7 +126,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 6
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -133,7 +149,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 4
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -152,7 +168,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 3
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -187,7 +203,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 7
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -202,30 +218,14 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 2
   flip_horizontal: 0
   flip_vertical: 0
 }
 animations {
   id: "star"
   images {
-    image: "/resource/effect/star_08.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  images {
     image: "/resource/effect/star_01.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  images {
-    image: "/resource/effect/star_05.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  images {
-    image: "/resource/effect/star_04.png"
-    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
-  }
-  images {
-    image: "/resource/effect/star_09.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   images {
@@ -233,7 +233,15 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   images {
-    image: "/resource/effect/star_07.png"
+    image: "/resource/effect/star_03.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/effect/star_04.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/effect/star_05.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   images {
@@ -241,11 +249,19 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   images {
-    image: "/resource/effect/star_03.png"
+    image: "/resource/effect/star_07.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/effect/star_08.png"
+    sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+  }
+  images {
+    image: "/resource/effect/star_09.png"
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 27
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -350,7 +366,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 4
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -458,7 +474,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 15
   flip_horizontal: 0
   flip_vertical: 0
 }
@@ -504,7 +520,7 @@ animations {
     sprite_trim_mode: SPRITE_TRIM_MODE_OFF
   }
   playback: PLAYBACK_LOOP_FORWARD
-  fps: 60
+  fps: 3
   flip_horizontal: 0
   flip_vertical: 0
 }
