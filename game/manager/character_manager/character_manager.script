@@ -28,6 +28,8 @@ local CHARACTER={
 function init(self)
 	self.party={}
 	self.party["군인"] = CHARACTER["군인"]
+	self.party["경찰"] = CHARACTER["경찰"]
+	self.party["과학자"] = CHARACTER["과학자"]
 end
 
 function on_message(self, message_id, message, sender)
