@@ -1,45 +1,96 @@
 go.property("anim", 1)
 go.property("hp", 100)
 go.property("avoid", 0.1)
-go.property("effect", false)
+
+local BATTLE_MANAGER = "ingame:/battle_manager"
 local CHARACTER_NAME ={"군인","과학자","경찰","도박사"}
 local CHARACTER_ANIM ={["군인"]="12",["과학자"]="4",["도박사"]="2",["경찰"]="11"}
+local EFFECT ={"치명적인 피해를 입으면 체력 1로 생존(1회)",nil,nil,"피해 입을시 대미지 1.5배"}
 function init(self)
 	msg.post("#sprite", "play_animation",{id=hash(CHARACTER_ANIM[CHARACTER_NAME[self.anim]])})
+	msg.post("#dead", "play_animation",{id=hash(tostring(self.anim))})
 	self.max_hp=self.hp
-	msg.post(".", "hp_update")
-end
-
-function update(self, dt)
-	-- Add update code here
-	-- Learn more: https://defold.com/manuals/script/
-	-- Remove this function if not needed
+	self.shield=0
+	self.effect=EFFECT[self.anim]
+	self.once=true
+	msg.post(".", "attack",{damage=0})
+	msg.post("#dead", "disable")
+	msg.post("#shield", "disable")
+	msg.post("#shield_label", "disable")
 end
 
 function on_message(self, message_id, message, sender)
-	if message_id==hash("hp_update") then
-		if message.damage then
-			self.hp=self.hp-message.damage
+	if message_id==hash("shield") then
+		self.shield=self.shield+message.shield
+		msg.post("#shield", "enable")
+		msg.post("#shield_label", "enable")
+		label.set_text("#shield_label", tostring(self.shield))
+	end
+	if message_id==hash("dead") then
+		if self.betting then
+			self.hp=30
+			msg.post(".", "attack",{damage=0})
+		elseif self.effect==EFFECT[1] and self.hp>1 and self.once then
+			self.hp=1
+			msg.post(".", "attack",{damage=0})
+			self.once=false
+		else
+			msg.post("#sprite", "disable")
+			msg.post("#dead", "enable")
+			msg.post(BATTLE_MANAGER, "dead_check",{character=true,sender=go.get_id()})
+		end
+	end
+	if message_id==hash("kill") then
+		msg.post(BATTLE_MANAGER, "dead")
+		go.animate("#dead", "tint.w", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 1)
+		timer.delay(1, false, function()
+			msg.post(".", "disable")
+		end)
+	end
+	if message_id==hash("turn_start") then
+		self.betting=false
+	end
+	if message_id==hash("set_hp") then
+		self.hp=message.hp
+		msg.post(BATTLE_MANAGER,"hp_update", {sender=go.get_id(),hp=self.hp})
+		label.set_text("#hp_rate", tostring(self.hp).."/"..tostring(self.max_hp))
+		go.set("#hp", "scale.x", self.hp/self.max_hp)
+		self.betting=true
+	end
+	if message_id==hash("attack") then
+		local damage=message.damage
+		if self.effect==EFFECT[2] then
+			damage=math.floor(damage*1.5)
+		end
+		if self.shield>=damage then
+			self.shield=self.shield-damage
+		elseif damage>self.shield then
+			damage=damage-self.shield
+			self.shield=0
+		end
+		self.hp=self.hp-damage
+		if self.hp<=0 then
+			self.hp=0
+			msg.post(".", "dead")
+		end
+		msg.post(BATTLE_MANAGER,"hp_update", {sender=go.get_id(),hp=self.hp})
+		if self.shield==0 then
+			msg.post("#shield", "disable")
+			msg.post("#shield_label", "disable")
+			label.set_text("#shield_label", tostring(self.shield))
 		end
 		label.set_text("#hp_rate", tostring(self.hp).."/"..tostring(self.max_hp))
 		go.set("#hp", "scale.x", self.hp/self.max_hp)
 	end
-end
-
-function on_input(self, action_id, action)
-	-- Add input-handling code here. The game object this script is attached to
-	-- must have acquired input focus:
-	--
-	--    msg.post(".", "acquire_input_focus")
-	--
-	-- All mapped input bindings will be received. Mouse and touch input will
-	-- be received regardless of where on the screen it happened.
-	-- Learn more: https://defold.com/manuals/input/
-	-- Remove this function if not needed
-end
-
-function on_reload(self)
-	-- Add reload-handling code here
-	-- Learn more: https://defold.com/manuals/hot-reload/
-	-- Remove this function if not needed
+	if message_id==hash("heal") then
+		if message.hp  then
+			self.hp=self.hp+message.hp
+		end
+		if self.hp >self.max_hp then
+			self.hp=self.max_hp
+		end
+		msg.post(BATTLE_MANAGER,"hp_update", {sender=go.get_id(),hp=self.hp})
+		label.set_text("#hp_rate", tostring(self.hp).."/"..tostring(self.max_hp))
+		go.set("#hp", "scale.x", self.hp/self.max_hp)
+	end
 end
